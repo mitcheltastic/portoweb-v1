@@ -1,90 +1,76 @@
-// frontend/src/app/page.tsx
-"use client"; 
+// NO "use client" here. This is now a Server Component.
 
-// 1. Import useState and useEffect from React
-import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import HeroSection from '../components/HeroSection';
 
-// The Project type remains the same
+// The Project type definition
 type Project = {
-  id: number; name: string; description: string | null;
-  repo_url: string | null; live_url: string | null;
+  id: number;
+  name: string;
+  description: string | null;
+  repo_url: string | null;
+  live_url: string | null;
 };
 
-export default function HomePage() {
-  // 2. Create a state variable to hold our projects. It starts as an empty array.
-  const [projects, setProjects] = useState<Project[]>([]);
+/**
+ * Fetches project data from the backend API.
+ * This function runs on the server.
+ */
+async function getProjects(): Promise<Project[]> {
+  try {
+    // IMPORTANT: In production, you should use an environment variable for your API URL
+    // e.g., process.env.NEXT_PUBLIC_API_URL
+    const res = await fetch('http://127.0.0.1:8000/api/projects', {
+      cache: 'no-store' // Use 'no-store' for fresh data on every request. Good for development.
+    });
 
-  // 3. Use the useEffect hook to fetch data when the component loads.
-  useEffect(() => {
-    const getProjects = async () => {
-      try {
-        const res = await fetch('http://127.0.0.1:8000/api/projects');
-        if (!res.ok) {
-          throw new Error('Failed to fetch projects from the API');
-        }
-        const data = await res.json();
-        // 4. Once data is fetched, update our state with it.
-        setProjects(data);
-      } catch (error) {
-        console.error('[FETCH_PROJECTS_ERROR]:', error);
-        // In case of an error, the 'projects' state remains an empty array.
-      }
-    };
+    if (!res.ok) {
+      // This will be caught by the catch block below
+      throw new Error('Failed to fetch projects from the API');
+    }
 
-    getProjects();
-  }, []); // The empty array [] means this effect runs only once when the page first loads.
+    return res.json();
+  } catch (error) {
+    console.error('[FETCH_PROJECTS_ERROR]:', error);
+    // In case of an error, return an empty array to prevent the page from crashing.
+    return []; 
+  }
+}
+
+// The page component itself is now async, allowing us to use 'await'
+export default async function HomePage() {
+  // We fetch the data directly here. No useState, no useEffect needed for fetching.
+  const projects = await getProjects();
 
   return (
-    // Use our new background color from the custom palette
-    <main className="max-w-4xl mx-auto px-6 md:px-12 py-24 md:py-32 bg-navy">
+    <main className="max-w-4xl mx-auto px-6 md:px-12 py-24 md:py-32">
       
-      {/* --- Hero Section --- */}
-      <section id="hero" className="min-h-[75vh] flex flex-col justify-center mb-24">
-        
-        {/* Use the accent color and a smaller text size */}
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.1 }}
-          className="text-accent mb-6 ml-1 font-mono text-base"
-        >
-          Hi, my name is
-        </motion.p>
-        
-        {/* Use the new slate color, larger font size, and tighter letter spacing */}
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-4xl sm:text-6xl md:text-7xl font-bold text-lightest-slate tracking-tight"
-        >
-          Mitch Affandi.
-        </motion.h1>
+      {/* The Hero section is now its own clean, animated Client Component */}
+      <HeroSection />
 
-        {/* Use the darker slate color for the secondary heading */}
-        <motion.h2 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
-          className="text-4xl sm:text-6xl md:text-7xl font-bold text-slate mt-2 tracking-tight"
-        >
-          I build things for the web.
-        </motion.h2>
-
-        {/* Use the standard slate color for the body text */}
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          className="max-w-xl mt-6 text-slate"
-        >
-          I'm a software engineer specializing in backend engineering (sometimes I do fullstack), also interested in AI/ML. Currently pursuing my degree in Telecommunication Engineering at Telkom University.
-        </motion.p>
+      {/* This is where you render the projects fetched from your API */}
+      <section id="projects" className="mt-16">
+        <h2 className="text-2xl font-bold text-lightest-slate mb-8">
+          Some Things I’ve Built
+        </h2>
+        
+        <div className="flex flex-col gap-8">
+          {projects.length > 0 ? (
+            projects.map(project => (
+              // You can turn this into its own <ProjectCard /> component later
+              <div key={project.id} className="p-6 border border-slate/20 rounded-lg bg-slate/5 hover:border-slate/40 transition-colors">
+                <h3 className="text-xl font-bold text-lightest-slate">{project.name}</h3>
+                <p className="text-slate mt-2">{project.description}</p>
+                <div className="flex gap-4 mt-4">
+                  {project.repo_url && <a href={project.repo_url} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">GitHub</a>}
+                  {project.live_url && <a href={project.live_url} target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">Live Demo</a>}
+                </div>
+              </div>
+            ))
+          ) : (
+            <p className="text-slate">Could not load projects or no projects are available at the moment.</p>
+          )}
+        </div>
       </section>
-
-      {/* The rest of your projects section can remain the same for now */}
-      {/* ... your <motion.section id="projects"> ... */}
 
     </main>
   );
