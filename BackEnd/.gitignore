@@ -1,1 +1,15 @@
+# Python Virtual Environment
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Secrets
 .env
+
+# VS Code
+.vscode/
+
+# Node / Frontend
+node_modules/
+.next/
