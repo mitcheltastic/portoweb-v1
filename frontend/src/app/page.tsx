@@ -96,6 +96,7 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+      
       {/* ✅ Experience Section */}
       <section id="experience" className="mt-24">
         <h2 className="text-2xl font-bold text-lightest-slate mb-6">Experience</h2>
