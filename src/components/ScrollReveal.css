@@ -1,0 +1,15 @@
+.sr-container {
+  margin: 20px 0;
+}
+
+.sr-text {
+  display: inline-block;
+  line-height: 1.45;
+  font-weight: 600;
+}
+
+.sr-word {
+  display: inline-block;
+}
+
+.backface-hidden { backface-visibility: hidden; }
