@@ -1,23 +1,24 @@
-// frontend/src/app/layout.tsx
+// src/app/layout.tsx
 import type { Metadata } from "next";
-// 1. Import the fonts we want from next/font/google
 import { Inter, Space_Mono } from "next/font/google";
 import "./globals.css";
 
 import Header from "@/components/header";
 import LeftSidebar from "@/components/leftsidebar";
 import RightSidebar from "@/components/rightsidebar";
+import PageWrapper from "@/components/PageWrapper"; // <-- 1. Import the new wrapper
 
-// 2. Configure the fonts
+// --- We remove useState and useEffect imports ---
+
 const inter = Inter({
   subsets: ["latin"],
-  variable: '--font-inter', // We assign it to a CSS variable
+  variable: '--font-inter',
 });
 
 const spaceMono = Space_Mono({
   subsets: ["latin"],
   weight: ['400', '700'],
-  variable: '--font-space-mono', // We assign it to another CSS variable
+  variable: '--font-space-mono',
 });
 
 export const metadata: Metadata = {
@@ -32,12 +33,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {/* 3. Apply the font variables to the body tag */}
-      <body className={`${inter.variable} ${spaceMono.variable} bg-gray-900 font-sans`}>
-        <Header />
-        <LeftSidebar />
-        <RightSidebar />
-        {children}
+      <body 
+        className={`${inter.variable} ${spaceMono.variable} bg-black font-sans`} 
+        // Changed from bg-gray-900 to bg-black
+        suppressHydrationWarning={true}
+      >
+        <PageWrapper>
+          <Header />
+          <LeftSidebar />
+          <RightSidebar />
+          {children}
+        </PageWrapper>
       </body>
     </html>
   );
