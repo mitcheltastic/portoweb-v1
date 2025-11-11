@@ -36,7 +36,7 @@ const HeroSection = () => {
 
       {/* Animated bio paragraph (word-by-word) */}
       <BlurText
-        text="I'm a software engineer specialising in backend engineering (sometimes full-stack), also interested in AI/ML. Currently pursuing my degree in Telecommunication Engineering at Telkom University."
+        text="I'm a software engineer specialising in backend & cloud engineering (sometimes full-stack), also interested in AI/ML. Currently pursuing my degree in Telecommunication Engineering at Telkom University."
         delay={60}                 // a touch quicker than the headline
         animateBy="words"          // or "chars" if you want finer granularity
         direction="top"
