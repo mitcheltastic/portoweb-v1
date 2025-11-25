@@ -43,12 +43,12 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
         break;
 
       case 'MOTTO_REVEAL':
-        // 5000ms (3s CSS duration + 2s pause)
-        timer = setTimeout(() => setStatus('COLOR_FLIP'), 5000);
+        // ~3s total: ~2.1s for reveal animations + short pause
+        timer = setTimeout(() => setStatus('COLOR_FLIP'), 3000);
         break;
 
       case 'COLOR_FLIP':
-        // Phase 3: background flash + start fading motto (0.5s)
+        // Phase 3: background flip (0.5s)
         timer = setTimeout(() => setStatus('EXIT_DELAY'), 500);
         break;
 
@@ -58,7 +58,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
         break;
 
       case 'SLIDE_UP':
-        // Phase 5: slide overlay up (match 800ms CSS transition)
+        // Phase 5: slide overlay up (match ~800ms CSS transition)
         timer = setTimeout(() => {
           setStatus('DONE');
           setRemoved(true);
@@ -79,7 +79,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
     return null;
   }
 
-  // 4. Derived flags for cleaner JSX
+  // 4. Derived flags
   const isMottoOpen =
     status === 'MOTTO_REVEAL' ||
     status === 'COLOR_FLIP' ||
@@ -94,10 +94,10 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
   const isSlidingUp = status === 'SLIDE_UP';
   const isMottoVisible = isMottoOpen;
 
-  // We will control text colour manually so globals can't fight us
+  // Text colour is controlled separately so it flips instantly, not via transition
   const textColor = isColorPhase ? '#ffffff' : '#000000';
 
-  // Wrapper: background flip + slide-up
+  // Wrapper: animate transform + opacity + background only
   const wrapperClasses = `
     fixed inset-0 z-[100] flex flex-col items-center justify-center
     transition-all duration-[800ms] ease-in-out
@@ -105,9 +105,9 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
     ${isSlidingUp ? '-translate-y-full opacity-0' : 'translate-y-0 opacity-100'}
   `;
 
-  // Container for Logo/Motto/Tag - Horizontal shift
+  // Container for Logo/Motto/Tag
   const logoContainerClasses =
-    'flex flex-col items-center relative -translate-x-28';
+    'flex flex-col items-start justify-center relative -translate-x-28';
 
   return (
     <div className={wrapperClasses}>
@@ -128,7 +128,6 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
               ${isMottoOpen && !logoSettled ? 'scale-[1.05]' : 'scale-100'}
             `}
             onTransitionEnd={(e) => {
-              // After the first transform animation, drop the extra scale
               if (
                 e.propertyName === 'transform' &&
                 isMottoOpen &&
@@ -142,7 +141,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
           {/* Motto + INTJ block */}
           <div
             className={`
-              absolute font-extrabold tracking-tight
+              absolute font-extrabold tracking-tight text-left
               transition-opacity duration-700 ease-out
               ${
                 isSlidingUp
@@ -154,37 +153,36 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
             `}
             style={{ color: textColor }}
           >
-            {/* Motto line */}
+            {/* Motto line (simple fade + slide-in) */}
             <h1
               className={`
                 text-4xl sm:text-5xl md:text-6xl
-                animate-text-pulse
                 [transform-origin:left]
-                ml-3 whitespace-nowrap
+                whitespace-nowrap
+                ml-3
               `}
-              style={{ color: textColor }}
             >
               <span
                 className={`
-                  inline-block transition-all duration-[3000ms] ease-out
-                  [clip-path:polygon(0%_0%,_0%_0%,_0%_100%,_0%_100%)]
+                  inline-block transition-[opacity,transform] duration-[1200ms] ease-out
                   ${
                     isMottoOpen
-                      ? '[clip-path:polygon(0%_0%,_100%_0%,_100%_100%,_0%_100%)]'
-                      : ''
+                      ? 'opacity-100 translate-x-0'
+                      : 'opacity-0 -translate-x-5'
                   }
                 `}
               >
-                If you can imagine it,<br />
+                If you can imagine it,
+                <br />
                 you can realise it.
               </span>
             </h1>
 
-            {/* INTJ-A (The Mastermind) - slide up from below, fully controlled colour */}
+            {/* INTJ-A (The Mastermind) - aligned with motto, stays visible through colour flip */}
             <p
               className={`
-                text-base font-normal mt-3
-                transition-all duration-700 ease-out delay-[3200ms]
+                text-base font-normal mt-3 ml-3
+                transition-[opacity,transform] duration-700 ease-out delay-[1400ms]
                 transform-gpu
                 ${
                   isMottoOpen
@@ -192,10 +190,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
                     : 'opacity-0 translate-y-3'
                 }
               `}
-              style={{
-                color: textColor,
-                WebkitTextFillColor: textColor,
-              }}
+              style={{ color: textColor }}
             >
               INTJ-A (The Mastermind)
             </p>
