@@ -6,19 +6,18 @@ import "./globals.css";
 import Header from "@/components/header";
 import LeftSidebar from "@/components/leftsidebar";
 import RightSidebar from "@/components/rightsidebar";
-import PageWrapper from "@/components/PageWrapper"; // <-- 1. Import the new wrapper
-
-// --- We remove useState and useEffect imports ---
+import PageWrapper from "@/components/PageWrapper";
+import Footer from "@/components/footer"; // 👈 Capital F to match file
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: '--font-inter',
+  variable: "--font-inter",
 });
 
 const spaceMono = Space_Mono({
   subsets: ["latin"],
-  weight: ['400', '700'],
-  variable: '--font-space-mono',
+  weight: ["400", "700"],
+  variable: "--font-space-mono",
 });
 
 export const metadata: Metadata = {
@@ -33,9 +32,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body 
-        className={`${inter.variable} ${spaceMono.variable} bg-black font-sans`} 
-        // Changed from bg-gray-900 to bg-black
+      <body
+        className={`${inter.variable} ${spaceMono.variable} bg-black font-sans`}
         suppressHydrationWarning={true}
       >
         <PageWrapper>
@@ -43,6 +41,7 @@ export default function RootLayout({
           <LeftSidebar />
           <RightSidebar />
           {children}
+          <Footer /> {/* Footer rendered here */}
         </PageWrapper>
       </body>
     </html>
