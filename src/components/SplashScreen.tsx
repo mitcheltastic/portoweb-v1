@@ -192,7 +192,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
               `}
               style={{ color: textColor }}
             >
-              INTJ-A (The Mastermind)
+              Mitch Affandi | INTJ-A (The Mastermind)
             </p>
           </div>
         </div>
