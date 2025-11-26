@@ -18,7 +18,7 @@ type Props = {
   blurStrength?: number;   // initial blur px
   containerClassName?: string;
   textClassName?: string;
-  rotationEnd?: string;     // e.g. 'bottom bottom'
+  rotationEnd?: string;     // e.g. "bottom bottom"
   wordAnimationEnd?: string;
   as?: keyof JSX.IntrinsicElements;
   scrubAmount?: number;     // smoother than true; default 0.7s catch-up
@@ -61,50 +61,47 @@ export default function ScrollReveal({
     const scroller = scrollContainerRef?.current ?? window;
     const words = el.querySelectorAll<HTMLElement>(".sr-word");
 
-    // Set initial state (no flash)
+    // Initial state: tilted + faint + blurred
     gsap.set(el, {
       rotate: baseRotation,
       transformOrigin: "0% 50%",
       force3D: true,
     });
+
     gsap.set(words, {
-      autoAlpha: baseOpacity, // opacity + visibility
+      autoAlpha: baseOpacity,
       ...(enableBlur ? { filter: `blur(${blurStrength}px)` } : {}),
       willChange: "transform, filter, opacity",
     });
 
-    // One timeline to rule them all — smoother than separate tweens
+    // ===== 1) Container rotation (scrubbed both ways) =====
     const tl = gsap.timeline({
       defaults: { ease: "none" },
       scrollTrigger: {
         trigger: el,
         scroller,
         start: "top bottom",
-        end: rotationEnd, // container motion length
-        scrub: scrubAmount, // <- smooth catch-up
+        end: rotationEnd,
+        scrub: scrubAmount,      // ← reveal + reverse
         fastScrollEnd: true,
         preventOverlaps: true,
         anticipatePin: 0.5,
-        // snap the progress a tiny bit to reduce micro-stutter on slow wheels
-        snap: { snapTo: [0, 0.25, 0.5, 0.75, 1], duration: 0.1, ease: "power1.out" },
       },
     });
 
-    // Rotate container to 0 across the whole section
     tl.to(el, { rotate: 0 }, 0);
 
-    // Word animation runs over the same scroll span (can be shorter via end markers)
+    // ===== 2) Words fade/blur in (also scrubbed both ways) =====
     const trig2 = ScrollTrigger.create({
       trigger: el,
       scroller,
       start: "top bottom-=20%",
       end: wordAnimationEnd,
-      scrub: scrubAmount,
+      scrub: scrubAmount,        // ← reveal + reverse
       fastScrollEnd: true,
     });
 
-    // Tie word animation progress to trig2
-    gsap.to(words, {
+    const wordsTween = gsap.to(words, {
       autoAlpha: 1,
       filter: enableBlur ? "blur(0px)" : undefined,
       stagger: staggerEach,
@@ -112,11 +109,14 @@ export default function ScrollReveal({
       scrollTrigger: trig2,
     });
 
+    // Cleanup only what we created
     return () => {
       tl.scrollTrigger?.kill();
-      trig2.kill();
       tl.kill();
-      ScrollTrigger.refresh();
+
+      trig2.kill();
+      wordsTween.scrollTrigger?.kill();
+      wordsTween.kill();
     };
   }, [
     scrollContainerRef,
