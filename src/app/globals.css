@@ -44,3 +44,27 @@ body {
 .animate-text-pulse {
   animation: text-pulse 2s ease-in-out infinite;
 }
+
+/* ===== Nav underline animation ===== */
+
+.nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  column-gap: 0.25rem; /* similar to gap-1 */
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -0.25rem;   /* sits just under the text */
+  width: 0;
+  height: 1px;
+  background-color: currentColor; /* follows text colour */
+  transition: width 0.3s ease-out;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
