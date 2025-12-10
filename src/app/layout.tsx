@@ -23,10 +23,11 @@ const spaceMono = Space_Mono({
 export const metadata: Metadata = {
   title: "Mitch's Porto",
   description: "Backend, Full-Stack, and AI/ML Developer Portfolio",
+  // 👇 UPDATED ICON SECTION
   icons: {
-    icon: "/MitchLogo.png", // Standard Favicon
-    shortcut: "/MitchLogo.png", // For some browsers
-    apple: "/MitchLogo.png", // For Apple devices (iPhone home screen)
+    icon: "/favicon-v1.png",      // General Favicon
+    shortcut: "/favicon-v1.png",  // Browsers that use shortcut icons
+    apple: "/favicon-v1.png",     // iPhone/iPad Homescreen icon
   },
 };
 
