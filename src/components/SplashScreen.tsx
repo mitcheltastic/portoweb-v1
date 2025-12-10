@@ -28,18 +28,14 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
   useEffect(() => {
     if (isLoading && !hasStarted) {
       setHasStarted(true);
-      setTimeout(() => {
-        setStatus('START_DELAY');
-      }, 50);
+      setTimeout(() => setStatus('START_DELAY'), 50);
     }
   }, [isLoading, hasStarted]);
 
   // 2. Cursor Blink
   useEffect(() => {
     if (status === 'START_DELAY') {
-      const cursorInterval = setInterval(() => {
-        setShowCursor((prev) => !prev);
-      }, 500);
+      const cursorInterval = setInterval(() => setShowCursor((p) => !p), 500);
       return () => clearInterval(cursorInterval);
     }
   }, [status]);
@@ -48,13 +44,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
   useEffect(() => {
     if (status === 'START_DELAY') {
       const interval = setInterval(() => {
-        setCount((prev) => {
-          if (prev >= 100) {
-            clearInterval(interval);
-            return 100;
-          }
-          return prev + Math.floor(Math.random() * 12) + 1; 
-        });
+        setCount((prev) => (prev >= 100 ? 100 : prev + Math.floor(Math.random() * 12) + 1));
       }, 100);
       return () => clearInterval(interval);
     }
@@ -94,7 +84,8 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
   return (
     <div
       className={clsx(
-        "fixed inset-0 z-[100] flex items-center justify-center transition-all ease-in-out cursor-none",
+        // ⬇️ FIX: h-[100dvh] fixes mobile address bar jump. overflow-hidden prevents scrollbar glitches.
+        "fixed top-0 left-0 w-screen h-[100dvh] z-[9999] flex items-center justify-center transition-all ease-in-out cursor-none overflow-hidden will-change-transform",
         bgColor,
         `duration-[${TIMINGS.SLIDE_UP}ms]`,
         isSlidingUp ? "-translate-y-full" : "translate-y-0"
@@ -111,12 +102,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
           <span className="font-mono text-xs tracking-[0.25em] text-neutral-500 font-medium">
             SYSTEM_BOOT_SEQUENCE
           </span>
-          <span 
-            className={clsx(
-              "inline-block w-2 h-4 bg-black transition-opacity duration-100", 
-              showCursor ? "opacity-100" : "opacity-0"
-            )} 
-          />
+          <span className={clsx("inline-block w-2 h-4 bg-black transition-opacity duration-100", showCursor ? "opacity-100" : "opacity-0")} />
         </div>
         <span className="font-mono text-5xl font-black text-neutral-800 tracking-tighter">
           {Math.min(count, 100)}%
@@ -126,7 +112,7 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
       {/* 2. MAIN CONTENT CONTAINER */}
       <div 
         className={clsx(
-          "relative flex flex-col md:flex-row items-center justify-center w-full h-full max-w-6xl mx-auto px-6 transition-opacity duration-500",
+          "relative flex flex-col md:flex-row items-center justify-center w-full h-full max-w-7xl mx-auto px-6 transition-opacity duration-500",
           isHiddenPhase ? "opacity-0 scale-95" : "opacity-100 scale-100"
         )}
       >
@@ -139,21 +125,22 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
             "z-30 rounded-full filter invert absolute transition-all duration-[1200ms] cubic-bezier(0.22, 1, 0.36, 1)",
             "w-32 h-32 md:w-48 md:h-48 shadow-2xl",
             isMottoOpen 
-              ? "-translate-y-[120px] md:translate-y-0 md:-translate-x-[300px] scale-100 rotate-0" 
+              // ⬇️ MOBILE FIX: Increased UP distance (-140px) so it clears the center line completely
+              // Desktop preserved at -300px
+              ? "-translate-y-[140px] md:translate-y-0 md:-translate-x-[300px] scale-100 rotate-0" 
               : "translate-y-0 translate-x-0 scale-125 rotate-180"
           )}
         />
 
-        {/* ⬇️ CONNECTING LINE FIX 
-           - Mobile: Horizontal Line (w-24, h-px), positioned Y=-40px to separate logo/text.
-           - Desktop: Vertical Line (w-px, h-40), positioned X=-160px to separate left/right.
-        */}
+        {/* CONNECTING LINE */}
         <div 
           className={clsx(
             "absolute z-20 transition-all duration-[1000ms] delay-200 ease-out",
             lineColor,
             isMottoOpen 
-              ? "opacity-20 w-24 h-px md:w-px md:h-40 -translate-y-[40px] md:translate-y-0 md:-translate-x-[160px]" 
+              // ⬇️ MOBILE FIX: Horizontal line moved to -60px (between logo and text)
+              // Desktop preserved at -160px
+              ? "opacity-20 w-24 h-px md:w-px md:h-40 -translate-y-[60px] md:translate-y-0 md:-translate-x-[160px]" 
               : "opacity-0 w-0 h-0"
           )}
         />
@@ -164,12 +151,14 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
             "absolute flex flex-col items-center md:items-start justify-center text-center md:text-left transition-all duration-[1200ms] cubic-bezier(0.22, 1, 0.36, 1)",
             "md:translate-y-0",
             isMottoOpen 
-              ? "opacity-100 blur-0 translate-y-[40px] md:translate-x-[180px]" 
+              // ⬇️ MOBILE FIX: Increased DOWN distance (+60px) so it never touches the line
+              // Desktop preserved at +180px
+              ? "opacity-100 blur-0 translate-y-[60px] md:translate-x-[180px]" 
               : "opacity-0 blur-xl translate-y-[20px] md:translate-x-0"
           )}
           style={{ color: textColor }}
         >
-          <div className="overflow-hidden">
+          <div className="overflow-hidden px-4 md:px-0"> {/* Added padding to prevent edge clipping */}
             <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold whitespace-nowrap leading-tight tracking-tight">
               If you can imagine it,<br />
               you can realise it.
