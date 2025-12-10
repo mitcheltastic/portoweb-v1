@@ -10,19 +10,19 @@ import "./ScrollReveal.css";
 gsap.registerPlugin(ScrollTrigger);
 
 type Props = {
-  children: string; // plain string
+  children: string;
   scrollContainerRef?: React.RefObject<HTMLElement>;
   enableBlur?: boolean;
-  baseOpacity?: number;    // initial opacity for words (via autoAlpha)
-  baseRotation?: number;   // initial skew/tilt for container
-  blurStrength?: number;   // initial blur px
+  baseOpacity?: number;
+  baseRotation?: number;
+  blurStrength?: number;
   containerClassName?: string;
   textClassName?: string;
-  rotationEnd?: string;     // e.g. "bottom bottom"
+  rotationEnd?: string;
   wordAnimationEnd?: string;
   as?: keyof JSX.IntrinsicElements;
-  scrubAmount?: number;     // smoother than true; default 0.7s catch-up
-  staggerEach?: number;     // seconds per word
+  scrubAmount?: number;
+  staggerEach?: number;
 };
 
 export default function ScrollReveal({
@@ -34,11 +34,9 @@ export default function ScrollReveal({
   blurStrength = 4,
   containerClassName = "",
   textClassName = "",
-  rotationEnd = "bottom bottom",
-  wordAnimationEnd = "bottom bottom",
   as: Tag = "h2",
-  scrubAmount = 0.7,
-  staggerEach = 0.03,
+  scrubAmount = 0.5, // Lowered slightly for snappier response on up/down
+  staggerEach = 0.05,
 }: Props) {
   const containerRef = useRef<HTMLElement | null>(null);
 
@@ -47,7 +45,7 @@ export default function ScrollReveal({
     return text.split(/(\s+)/).map((word, i) => {
       if (/^\s+$/.test(word)) return word;
       return (
-        <span className="sr-word" key={i}>
+        <span className="sr-word inline-block" key={i}>
           {word}
         </span>
       );
@@ -61,62 +59,57 @@ export default function ScrollReveal({
     const scroller = scrollContainerRef?.current ?? window;
     const words = el.querySelectorAll<HTMLElement>(".sr-word");
 
-    // Initial state: tilted + faint + blurred
+    // 1. Set Initial State
+    // Container is tilted
     gsap.set(el, {
       rotate: baseRotation,
       transformOrigin: "0% 50%",
-      force3D: true,
+      force3D: true, // Optimizes for GPU
     });
 
+    // Words are faint and blurred
     gsap.set(words, {
       autoAlpha: baseOpacity,
-      ...(enableBlur ? { filter: `blur(${blurStrength}px)` } : {}),
+      filter: enableBlur ? `blur(${blurStrength}px)` : undefined,
+      y: 10, // Slight Y offset for better entrance feel
       willChange: "transform, filter, opacity",
     });
 
-    // ===== 1) Container rotation (scrubbed both ways) =====
+    // 2. Create ONE Master Timeline
+    // This ensures rotation and text reveal are perfectly locked together
     const tl = gsap.timeline({
-      defaults: { ease: "none" },
+      defaults: { ease: "power2.out" }, // Smoother easing
       scrollTrigger: {
         trigger: el,
-        scroller,
-        start: "top bottom",
-        end: rotationEnd,
-        scrub: scrubAmount,      // ← reveal + reverse
-        fastScrollEnd: true,
-        preventOverlaps: true,
-        anticipatePin: 0.5,
+        scroller: scroller,
+        // Start when the top of element is at 90% of viewport height (near bottom)
+        start: "top 90%", 
+        // Finish when the bottom of element is at 60% of viewport height (center-ish)
+        end: "bottom 60%", 
+        scrub: scrubAmount, // This enables the Up/Down scroll effect
+        toggleActions: "play none none reverse",
       },
     });
 
-    tl.to(el, { rotate: 0 }, 0);
+    // 3. Add Animations to Timeline
+    // Animate Rotation
+    tl.to(el, { 
+      rotate: 0, 
+      duration: 1 
+    }, 0);
 
-    // ===== 2) Words fade/blur in (also scrubbed both ways) =====
-    const trig2 = ScrollTrigger.create({
-      trigger: el,
-      scroller,
-      start: "top bottom-=20%",
-      end: wordAnimationEnd,
-      scrub: scrubAmount,        // ← reveal + reverse
-      fastScrollEnd: true,
-    });
-
-    const wordsTween = gsap.to(words, {
+    // Animate Words (running in parallel with rotation)
+    tl.to(words, {
       autoAlpha: 1,
-      filter: enableBlur ? "blur(0px)" : undefined,
+      filter: "blur(0px)",
+      y: 0,
       stagger: staggerEach,
-      ease: "none",
-      scrollTrigger: trig2,
-    });
+      duration: 1,
+    }, 0); // The '0' here forces it to start at the beginning of the timeline
 
-    // Cleanup only what we created
     return () => {
       tl.scrollTrigger?.kill();
       tl.kill();
-
-      trig2.kill();
-      wordsTween.scrollTrigger?.kill();
-      wordsTween.kill();
     };
   }, [
     scrollContainerRef,
@@ -124,8 +117,6 @@ export default function ScrollReveal({
     baseOpacity,
     blurStrength,
     enableBlur,
-    rotationEnd,
-    wordAnimationEnd,
     scrubAmount,
     staggerEach,
   ]);

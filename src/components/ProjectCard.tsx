@@ -1,73 +1,113 @@
+"use client";
+
+import React from "react";
+import { FiGithub, FiExternalLink, FiFolder } from "react-icons/fi";
 import { Project } from "@/types/project";
 
-type Props = { project: Project };
+type ExtendedProject = Project & {
+  image?: string;
+};
+
+type Props = {
+  project: ExtendedProject;
+};
 
 export default function ProjectCard({ project }: Props) {
+  // 🛡️ SAFETY CHECK
+  if (!project) return null;
+
   return (
-    <article className="p-6 border border-slate/20 rounded-lg bg-slate/5 hover:border-slate/40 transition-colors">
-      <header className="mb-3">
-        <h3 className="text-xl font-bold text-lightest-slate">{project.name}</h3>
-        {(project.role || project.org || project.period) && (
-          <p className="text-sm text-slate mt-1">
-            {project.role && <span>{project.role}</span>}
-            {project.role && project.org && <span> • </span>}
-            {project.org && <span>{project.org}</span>}
-            {(project.role || project.org) && project.period && <span> • </span>}
-            {project.period && <span>{project.period}</span>}
-          </p>
+    <article className="group relative flex flex-col h-[420px] bg-neutral-900/50 backdrop-blur-sm border border-neutral-800 rounded-xl overflow-hidden transition-all duration-300 hover:border-white/40 hover:shadow-[0_0_20px_rgba(255,255,255,0.05)]">
+      
+      {/* 1. TOP IMAGE / PLACEHOLDER AREA */}
+      <div className="h-48 w-full overflow-hidden relative bg-neutral-950 flex-shrink-0">
+        {project.image ? (
+          <img
+            src={project.image}
+            alt={project.name || "Project Image"}
+            className="w-full h-full object-cover grayscale opacity-80 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-105"
+          />
+        ) : (
+          /* Placeholder: Pure monochrome gradient */
+          <div className="w-full h-full bg-gradient-to-br from-neutral-800 to-neutral-950 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
+            <FiFolder className="text-4xl text-neutral-600 group-hover:text-white transition-colors duration-300" />
+          </div>
         )}
-      </header>
+        
+        {/* Overlay for text contrast */}
+        <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 to-transparent opacity-80 pointer-events-none" />
+      </div>
 
-      {project.description && <p className="text-slate">{project.description}</p>}
+      {/* 2. CONTENT AREA */}
+      <div className="p-6 flex flex-col flex-grow relative">
+        
+        {/* Header: Title + Links */}
+        <div className="flex justify-between items-start mb-2">
+          <div className="flex flex-col">
+            <h3 className="text-xl font-bold text-neutral-200 group-hover:text-white transition-colors duration-300 line-clamp-1">
+              {project.name}
+            </h3>
+            
+            {(project.role || project.org) && (
+              <span className="text-xs text-neutral-500 mt-1 group-hover:text-neutral-400 transition-colors">
+                {project.role} {project.role && project.org && "•"} {project.org}
+              </span>
+            )}
+          </div>
+          
+          {/* Action Icons */}
+          <div className="flex gap-4 text-neutral-500">
+            {project.repo_url && (
+              <a 
+                href={project.repo_url} 
+                target="_blank" 
+                rel="noreferrer" 
+                className="hover:text-white transition-colors z-20"
+                aria-label="GitHub Repo"
+              >
+                <FiGithub size={20} />
+              </a>
+            )}
+            {project.live_url && (
+              <a 
+                href={project.live_url} 
+                target="_blank" 
+                rel="noreferrer" 
+                className="hover:text-white transition-colors z-20"
+                aria-label="Live Demo"
+              >
+                <FiExternalLink size={20} />
+              </a>
+            )}
+          </div>
+        </div>
 
-      {/* Tech chips */}
-      {project.tech && project.tech.length > 0 && (
-        <ul className="flex flex-wrap gap-2 mt-4">
-          {project.tech.map((t) => (
-            <li
-              key={t}
-              className="text-xs px-2 py-1 rounded border border-slate/30 text-slate/90"
-            >
-              {t}
-            </li>
-          ))}
-        </ul>
-      )}
+        {/* Description */}
+        <p className="text-neutral-400 text-sm leading-relaxed mb-6 line-clamp-3 group-hover:text-neutral-300 transition-colors">
+          {project.description}
+        </p>
 
-      {/* Highlights */}
-      {project.highlights && project.highlights.length > 0 && (
-        <ul className="list-disc ml-5 mt-4 text-slate text-sm space-y-1">
-          {project.highlights.map((h, i) => (
-            <li key={i}>{h}</li>
-          ))}
-        </ul>
-      )}
-
-      {/* Actions */}
-      {(project.repo_url || project.live_url) && (
-        <div className="flex gap-4 mt-4">
-          {project.repo_url && (
-            <a
-              href={project.repo_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline"
-            >
-              GitHub
-            </a>
-          )}
-          {project.live_url && (
-            <a
-              href={project.live_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-accent hover:underline"
-            >
-              Live Demo
-            </a>
+        {/* Footer: Tech Stack Pills (Monochrome) */}
+        <div className="mt-auto">
+          {project.tech && project.tech.length > 0 && (
+            <ul className="flex flex-wrap gap-2 text-xs font-mono text-neutral-400">
+              {project.tech.slice(0, 3).map((t, i) => (
+                <li 
+                  key={i} 
+                  className="bg-neutral-800/50 px-3 py-1 rounded-full border border-neutral-700 whitespace-nowrap group-hover:border-neutral-500 transition-colors"
+                >
+                  {t}
+                </li>
+              ))}
+              {project.tech.length > 3 && (
+                <li className="bg-neutral-800/50 px-3 py-1 rounded-full border border-neutral-700 text-neutral-500 group-hover:border-neutral-500 transition-colors">
+                  +{project.tech.length - 3}
+                </li>
+              )}
+            </ul>
           )}
         </div>
-      )}
+      </div>
     </article>
   );
 }

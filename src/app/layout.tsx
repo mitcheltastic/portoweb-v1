@@ -7,7 +7,7 @@ import Header from "@/components/header";
 import LeftSidebar from "@/components/leftsidebar";
 import RightSidebar from "@/components/rightsidebar";
 import PageWrapper from "@/components/PageWrapper";
-import Footer from "@/components/footer"; // 👈 Capital F to match file
+import Footer from "@/components/footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,8 +21,12 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mitch's Portfolio",
+  title: "Mitch's Porto",
   description: "Backend, Full-Stack, and AI/ML Developer Portfolio",
+  // 👇 Add this section
+  icons: {
+    icon: "/MitchLogo.png", 
+  },
 };
 
 export default function RootLayout({
@@ -41,7 +45,7 @@ export default function RootLayout({
           <LeftSidebar />
           <RightSidebar />
           {children}
-          <Footer /> {/* Footer rendered here */}
+          <Footer />
         </PageWrapper>
       </body>
     </html>

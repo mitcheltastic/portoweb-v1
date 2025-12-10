@@ -7,13 +7,22 @@ const Header = () => {
   const [show, setShow] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
 
+  // 1. Define the Smooth Scroll function
+  const handleScrollToTop = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault(); // Stop Next.js from "navigating"
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // Force smooth scrolling
+    });
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
       if (currentScrollY > lastScrollY) {
-        setShow(false); // scrolling down ➜ hide
+        setShow(false); 
       } else {
-        setShow(true); // scrolling up ➜ show
+        setShow(true); 
       }
       setLastScrollY(currentScrollY);
     };
@@ -31,17 +40,22 @@ const Header = () => {
     >
       <nav className="flex justify-between items-center max-w-7xl mx-auto">
         {/* --- LOGO --- */}
-        <Link href="/" className="group relative w-10 h-10 block">
+        {/* 2. Attach the onClick handler here */}
+        <Link 
+          href="/" 
+          onClick={handleScrollToTop} 
+          className="group relative w-10 h-10 block"
+        >
           {/* Static white background ring */}
           <div className="absolute inset-0 rounded-full bg-white border-2 border-white z-[-1]" />
 
           {/* Inner moving circle */}
           <div
             className="relative z-10 flex items-center justify-center w-full h-full 
-                        border-2 border-white rounded-full bg-black 
-                        transition-transform duration-300 ease-in-out 
-                        group-hover:-translate-x-1 group-hover:-translate-y-1 
-                        group-hover:bg-white"
+                       border-2 border-white rounded-full bg-black 
+                       transition-transform duration-300 ease-in-out 
+                       group-hover:-translate-x-1 group-hover:-translate-y-1 
+                       group-hover:bg-white"
           >
             <Image
               src="/MitchLogo.png"
@@ -56,6 +70,8 @@ const Header = () => {
         {/* --- NAVIGATION --- */}
         <div className="flex items-center space-x-6">
           <ol className="hidden md:flex items-center space-x-6 text-sm font-mono list-none">
+            {/* ... (Rest of your links remain exactly the same) ... */}
+            
             {/* ABOUT */}
             <li>
               <Link
@@ -103,20 +119,17 @@ const Header = () => {
 
           {/* Resume Button */}
           <div className="relative group w-fit h-fit">
-            {/* Static white background, does NOT move */}
             <div
               className="absolute inset-0 rounded border-2 border-accent bg-white z-[-1]
-                        transition duration-300 ease-in-out"
+                         transition duration-300 ease-in-out"
             />
-
-            {/* Floating button – moves only */}
             <a
               href="/resume.pdf"
               target="_blank"
               rel="noopener noreferrer"
               className="relative inline-block font-mono text-accent border-2 border-accent rounded px-4 py-2 text-sm
-                        bg-black transition-transform duration-300 ease-in-out
-                        group-hover:-translate-x-1 group-hover:-translate-y-1"
+                         bg-black transition-transform duration-300 ease-in-out
+                         group-hover:-translate-x-1 group-hover:-translate-y-1"
             >
               Resume
             </a>

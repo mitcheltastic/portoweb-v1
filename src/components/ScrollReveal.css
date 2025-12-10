@@ -1,15 +1,31 @@
+/* ScrollReveal.css */
+
 .sr-container {
+  /* Keep your spacing */
   margin: 20px 0;
+  
+  /* NEW: Adds depth so the rotation looks 3D instead of flat */
+  perspective: 1000px; 
 }
 
 .sr-text {
   display: inline-block;
   line-height: 1.45;
   font-weight: 600;
+  
+  /* NEW: Helps with nesting 3D transforms */
+  transform-style: preserve-3d; 
 }
 
 .sr-word {
+  /* Required for transforms to work on text spans */
   display: inline-block;
+  
+  /* Optional: Prevents text selection cursor flickering during scroll */
+  user-select: none; 
 }
 
-.backface-hidden { backface-visibility: hidden; }
+.backface-hidden {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden; /* Safari support */
+}

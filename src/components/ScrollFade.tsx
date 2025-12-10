@@ -10,12 +10,12 @@ type Props = {
   children: React.ReactNode;
   className?: string;
   scrollContainerRef?: React.RefObject<HTMLElement>;
-  fromY?: number;          // px
-  blur?: number;           // px
+  fromY?: number;   // px
+  blur?: number;    // px
   start?: string;
   end?: string;
-  scrub?: boolean | number;
-  scrubAmount?: number;    // preferred numeric scrub for smoothness
+  delay?: number;   // 👈 NEW: Add delay prop type
+  scrubAmount?: number | boolean; // Added optional scrub support just in case
 };
 
 export default function ScrollFade({
@@ -24,10 +24,9 @@ export default function ScrollFade({
   scrollContainerRef,
   fromY = 24,
   blur = 8,
-  start = "top bottom-=10%",
-  end = "bottom bottom",
-  scrub,              // legacy prop (if provided, overrides scrubAmount)
-  scrubAmount = 0.6,  // buttery
+  start = "top 85%",
+  end = "bottom 20%",
+  delay = 0,        // 👈 NEW: Default to 0
 }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -35,41 +34,48 @@ export default function ScrollFade({
     const el = ref.current;
     if (!el) return;
 
-    const scroller = scrollContainerRef?.current ?? window;
+    const scroller = scrollContainerRef?.current; 
 
-    // Pre-set to avoid flicker
-    gsap.set(el, {
-      autoAlpha: 0,
-      y: fromY,
-      filter: `blur(${blur}px)`,
-      willChange: "transform, filter, opacity",
-      force3D: true,
-    });
+    const ctx = gsap.context(() => {
+      gsap.set(el, {
+        autoAlpha: 0,
+        y: fromY,
+        filter: `blur(${blur}px)`,
+        willChange: "transform, filter, opacity",
+        force3D: true,
+      });
 
-    const st = ScrollTrigger.create({
-      trigger: el,
-      scroller,
-      start,
-      end,
-      scrub: scrub ?? scrubAmount,
-      fastScrollEnd: true,
-      preventOverlaps: true,
-      anticipatePin: 0.5,
-    });
-
-    const tween = gsap.to(el, {
-      autoAlpha: 1,
-      y: 0,
-      filter: "blur(0px)",
-      ease: "none",
-      scrollTrigger: st,
+      gsap.fromTo(
+        el,
+        {
+          autoAlpha: 0,
+          y: fromY,
+          filter: `blur(${blur}px)`,
+        },
+        {
+          autoAlpha: 1,
+          y: 0,
+          filter: "blur(0px)",
+          ease: "power2.out",
+          delay: delay, // 👈 NEW: Pass the delay to GSAP
+          scrollTrigger: {
+            trigger: el,
+            scroller,
+            start,
+            end,
+            toggleActions: "play reverse play reverse",
+            fastScrollEnd: true,
+            preventOverlaps: true,
+            anticipatePin: 0.5,
+          },
+        }
+      );
     });
 
     return () => {
-      st.kill();
-      tween.kill();
+      ctx.revert();
     };
-  }, [scrollContainerRef, fromY, blur, start, end, scrub, scrubAmount]);
+  }, [scrollContainerRef, fromY, blur, start, end, delay]); // 👈 Add delay to dependency array
 
   return (
     <div ref={ref} className={className}>

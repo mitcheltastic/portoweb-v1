@@ -9,7 +9,7 @@ const Footer = () => {
         </span>
 
         <span className="font-mono tracking-tight text-slate-500">
-          Built by Mitch.
+          Built by Mitch Affandi.
         </span>
       </div>
     </footer>
