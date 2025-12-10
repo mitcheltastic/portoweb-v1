@@ -22,14 +22,30 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
   const [status, setStatus] = useState<AnimationStatus>('INITIAL');
   const [hasStarted, setHasStarted] = useState(false);
   const [count, setCount] = useState(0);
+  const [showCursor, setShowCursor] = useState(true);
 
+  // 1. Initial Trigger
   useEffect(() => {
     if (isLoading && !hasStarted) {
       setHasStarted(true);
-      setStatus('START_DELAY');
+      // Short timeout to ensure React renders the "INITIAL" state (hidden) first
+      setTimeout(() => {
+        setStatus('START_DELAY');
+      }, 50);
     }
   }, [isLoading, hasStarted]);
 
+  // 2. Cursor Blinking Logic
+  useEffect(() => {
+    if (status === 'START_DELAY') {
+      const cursorInterval = setInterval(() => {
+        setShowCursor((prev) => !prev);
+      }, 500);
+      return () => clearInterval(cursorInterval);
+    }
+  }, [status]);
+
+  // 3. Counter Logic
   useEffect(() => {
     if (status === 'START_DELAY') {
       const interval = setInterval(() => {
@@ -45,8 +61,9 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
     }
   }, [status]);
 
+  // 4. State Machine
   useEffect(() => {
-    if (!hasStarted || status === 'DONE') return;
+    if (!hasStarted || status === 'DONE' || status === 'INITIAL') return;
     let timer: NodeJS.Timeout;
     const advance = (next: AnimationStatus, ms: number) => {
       timer = setTimeout(() => setStatus(next), ms);
@@ -65,11 +82,17 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
 
   if (status === 'DONE' || !hasStarted) return null;
 
-  const isBooting = status === 'START_DELAY';
+  // --- DERIVED STATE FLAGS ---
+  
+  // 1. HIDDEN STATE: Include 'INITIAL' here to prevent the flash!
+  const isHiddenPhase = ['INITIAL', 'START_DELAY'].includes(status);
+  
+  // 2. ANIMATION PHASES
   const isMottoOpen = ['MOTTO_REVEAL', 'COLOR_FLIP', 'EXIT_DELAY', 'SLIDE_UP'].includes(status);
   const isColorPhase = ['COLOR_FLIP', 'EXIT_DELAY', 'SLIDE_UP'].includes(status);
   const isSlidingUp = status === 'SLIDE_UP';
 
+  // 3. STYLES
   const textColor = isColorPhase ? '#ffffff' : '#000000';
   const bgColor = isColorPhase ? 'bg-black' : 'bg-white';
   const lineColor = isColorPhase ? 'bg-white' : 'bg-black';
@@ -77,24 +100,35 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
   return (
     <div
       className={clsx(
-        "fixed inset-0 z-[100] flex items-center justify-center transition-colors duration-700 ease-in-out cursor-none",
+        // ⬇️ FIX: Restored 'transition-all' so the slide up works
+        "fixed inset-0 z-[100] flex items-center justify-center transition-all ease-in-out cursor-none",
         bgColor,
+        // Match transition duration to the SLIDE_UP timing
         `duration-[${TIMINGS.SLIDE_UP}ms]`,
         isSlidingUp ? "-translate-y-full" : "translate-y-0"
       )}
     >
-      {/* 1. BOOT SEQUENCE COUNTER (Visible only at start) */}
+      {/* 1. BOOT SEQUENCE COUNTER */}
       <div 
         className={clsx(
-          "absolute inset-0 flex flex-col items-center justify-center z-50 transition-opacity duration-500",
-          isBooting ? "opacity-100" : "opacity-0 pointer-events-none"
+          "absolute inset-0 flex flex-col items-center justify-center z-50 transition-all duration-700 ease-out",
+          // Show only during start delay, otherwise hide
+          status === 'START_DELAY' ? "opacity-100 scale-100" : "opacity-0 scale-110 pointer-events-none"
         )}
       >
-        {/* ⬇️ FIXED: Forced text-black and bold so it stands out against white */}
-        <span className="font-mono text-sm tracking-widest text-black font-bold mb-2">
-          SYSTEM_BOOT_SEQUENCE
-        </span>
-        <span className="font-mono text-4xl font-black text-accent tracking-tighter">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="font-mono text-xs tracking-[0.25em] text-neutral-500 font-medium">
+            SYSTEM_BOOT_SEQUENCE
+          </span>
+          <span 
+            className={clsx(
+              "inline-block w-2 h-4 bg-black transition-opacity duration-100", 
+              showCursor ? "opacity-100" : "opacity-0"
+            )} 
+          />
+        </div>
+
+        <span className="font-mono text-5xl font-black text-neutral-800 tracking-tighter">
           {Math.min(count, 100)}%
         </span>
       </div>
@@ -103,7 +137,8 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
       <div 
         className={clsx(
           "relative flex flex-col md:flex-row items-center justify-center w-full h-full max-w-6xl mx-auto px-6 transition-opacity duration-500",
-          isBooting ? "opacity-0 scale-95" : "opacity-100 scale-100"
+          // ⬇️ FIX: Use isHiddenPhase so it stays hidden during INITIAL state too
+          isHiddenPhase ? "opacity-0 scale-95" : "opacity-100 scale-100"
         )}
       >
         
