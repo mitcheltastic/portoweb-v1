@@ -10,12 +10,13 @@ type Props = {
   children: React.ReactNode;
   className?: string;
   scrollContainerRef?: React.RefObject<HTMLElement>;
-  fromY?: number;   // px
-  blur?: number;    // px
+  fromY?: number;
+  blur?: number;
   start?: string;
   end?: string;
-  delay?: number;   // 👈 NEW: Add delay prop type
-  scrubAmount?: number | boolean; // Added optional scrub support just in case
+  delay?: number;
+  // ⬇️ NEW PROP: Allows us to override the animation behavior
+  toggleActions?: string; 
 };
 
 export default function ScrollFade({
@@ -26,7 +27,9 @@ export default function ScrollFade({
   blur = 8,
   start = "top 85%",
   end = "bottom 20%",
-  delay = 0,        // 👈 NEW: Default to 0
+  delay = 0,
+  // ⬇️ DEFAULT: "play reverse play reverse" (Fade in -> Fade out -> Fade in -> Fade out)
+  toggleActions = "play reverse play reverse", 
 }: Props) {
   const ref = useRef<HTMLDivElement | null>(null);
 
@@ -57,13 +60,14 @@ export default function ScrollFade({
           y: 0,
           filter: "blur(0px)",
           ease: "power2.out",
-          delay: delay, // 👈 NEW: Pass the delay to GSAP
+          delay: delay,
           scrollTrigger: {
             trigger: el,
             scroller,
             start,
             end,
-            toggleActions: "play reverse play reverse",
+            // ⬇️ Use the prop here instead of hardcoding
+            toggleActions: toggleActions, 
             fastScrollEnd: true,
             preventOverlaps: true,
             anticipatePin: 0.5,
@@ -75,7 +79,7 @@ export default function ScrollFade({
     return () => {
       ctx.revert();
     };
-  }, [scrollContainerRef, fromY, blur, start, end, delay]); // 👈 Add delay to dependency array
+  }, [scrollContainerRef, fromY, blur, start, end, delay, toggleActions]); // Added toggleActions to dependency
 
   return (
     <div ref={ref} className={className}>

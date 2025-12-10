@@ -3,8 +3,10 @@
 import React, { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import ScrollReveal from "@/components/ScrollReveal";
+import ScrollFade from "@/components/ScrollFade";
 import ProjectCard from "@/components/ProjectCard";
 import type { Project } from "@/types/project";
+import { FiActivity, FiDatabase } from "react-icons/fi";
 
 type Props = { projects: Project[] };
 
@@ -12,7 +14,7 @@ export default function ExperienceSection({ projects }: Props) {
   const containerRef = useRef<HTMLDivElement>(null);
   const loopRef = useRef<GSAPAnimation | null>(null);
 
-  // 🛡️ Safe filtering: Ensure we don't map over undefined items
+  // 🛡️ Safe filtering
   const validProjects = projects?.filter(p => p !== undefined && p !== null) || [];
   
   // Clone data for infinite loop
@@ -70,44 +72,75 @@ export default function ExperienceSection({ projects }: Props) {
   };
 
   return (
-    <section id="experience" className="mt-24 w-full overflow-hidden">
-      <div className="max-w-4xl mx-auto px-6 md:px-0">
+    <section id="experience" className="mt-32 w-full overflow-hidden relative">
+      
+      {/* 1. HEADER: TECHNICAL & MONOCHROME */}
+      <div className="max-w-4xl mx-auto px-6 md:px-0 mb-12 flex items-end gap-4 border-b border-neutral-800 pb-4">
         <ScrollReveal
           as="h2"
           baseOpacity={0}
           enableBlur
-          baseRotation={4}
+          baseRotation={0}
           blurStrength={10}
-          containerClassName="text-2xl font-bold text-accent mb-10"
+          containerClassName="text-3xl md:text-4xl font-bold text-white tracking-tight"
         >
-          Experience
+          // 02. Experience
         </ScrollReveal>
+        <ScrollFade delay={0.2}>
+           <span className="font-mono text-xs text-neutral-500 mb-1 tracking-widest hidden sm:inline-block">
+            [ キャリア • LOGS ]
+          </span>
+        </ScrollFade>
       </div>
 
       {items.length === 0 ? (
-        <p className="text-slate max-w-4xl mx-auto px-6">No data available.</p>
+        <p className="text-neutral-500 font-mono max-w-4xl mx-auto px-6 border-l-2 border-neutral-800 pl-4">
+          [!] ERR_NO_DATA_FOUND
+        </p>
       ) : (
-        <div 
-          ref={containerRef}
-          className="relative w-full py-8 cursor-grab active:cursor-grabbing"
-          onMouseMove={handleMouseMove}
-          onMouseLeave={handleMouseLeave}
-        >
-          {/* Faded Edges */}
-          <div className="absolute top-0 left-0 w-16 md:w-32 h-full bg-gradient-to-r from-[var(--background)] to-transparent z-10 pointer-events-none" />
-          <div className="absolute top-0 right-0 w-16 md:w-32 h-full bg-gradient-to-l from-[var(--background)] to-transparent z-10 pointer-events-none" />
+        /* Marquee Container */
+        <div className="relative">
+          
+          {/* DECORATIVE: Stream Status Indicators */}
+          <div className="max-w-4xl mx-auto px-6 md:px-0 flex justify-between items-center text-[10px] font-mono text-neutral-600 mb-2">
+            <div className="flex items-center gap-2">
+              <FiDatabase /> DATA_STREAM: <span className="text-green-500 animate-pulse">ACTIVE</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <FiActivity /> SYNC_RATE: AUTO
+            </div>
+          </div>
 
-          {/* Marquee Track */}
-          <div className="marquee-track flex gap-6 md:gap-10 w-max px-4">
-            {items.map((project, i) => (
-              <div 
-                key={`${project.id}-${i}`} 
-                className="w-[300px] md:w-[400px] flex-shrink-0 transition-transform duration-300 hover:scale-[1.02]"
-              >
-                <ProjectCard project={project} />
-              </div>
+          <div 
+            ref={containerRef}
+            className="relative w-full py-8 cursor-grab active:cursor-grabbing border-y border-neutral-900 bg-neutral-950/30"
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+          >
+            {/* Faded Edges (Darker gradient for monochrome feel) */}
+            <div className="absolute top-0 left-0 w-16 md:w-32 h-full bg-gradient-to-r from-[var(--background)] to-transparent z-10 pointer-events-none" />
+            <div className="absolute top-0 right-0 w-16 md:w-32 h-full bg-gradient-to-l from-[var(--background)] to-transparent z-10 pointer-events-none" />
+
+            {/* Marquee Track */}
+            <div className="marquee-track flex gap-6 md:gap-10 w-max px-4">
+              {items.map((project, i) => (
+                <div 
+                  key={`${project.id}-${i}`} 
+                  className="w-[300px] md:w-[400px] flex-shrink-0 transition-transform duration-300 hover:scale-[1.02]"
+                >
+                  <ProjectCard project={project} />
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          {/* DECORATIVE: Bottom Ruler */}
+          <div className="max-w-4xl mx-auto mt-2 h-px bg-neutral-900 flex justify-between">
+            {[...Array(20)].map((_, i) => (
+              <div key={i} className="w-px h-1 bg-neutral-800" />
             ))}
           </div>
+
         </div>
       )}
     </section>

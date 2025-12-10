@@ -1,17 +1,28 @@
-// frontend/src/components/RightSidebar.tsx
+"use client";
+
+import { motion } from "framer-motion";
+
 const RightSidebar = () => {
   return (
-    <div className="hidden md:flex flex-col items-center fixed bottom-0 right-8 z-10">
+    // 1. Change to motion.div for entrance animation
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 1.5 }} // Matches LeftSidebar delay
+      className="hidden md:flex flex-col items-center fixed bottom-0 right-8 z-50"
+    >
       <a 
         href="mailto:mitch.affandi22@gmail.com" 
-        // Changed hover:text-cyan-400 to hover:text-white
-        className="text-gray-400 hover:text-white text-sm tracking-widest transition-all duration-300 hover:-translate-y-2"
+        // 2. Updated colors to neutral-500 -> white to match the rest of the site
+        className="text-neutral-500 hover:text-white text-sm tracking-widest transition-all duration-300 ease-in-out hover:-translate-y-2"
         style={{ writingMode: 'vertical-rl' }}
       >
         mitch.affandi22@gmail.com
       </a>
-      <div className="w-px h-24 bg-gray-600 mt-6"></div>
-    </div>
+      
+      {/* 3. Updated line color to neutral-700 */}
+      <div className="w-px h-24 bg-neutral-700 mt-6"></div>
+    </motion.div>
   );
 };
 

@@ -4,59 +4,90 @@ import React from "react";
 import ScrollReveal from "@/components/ScrollReveal";
 import ScrollFade from "@/components/ScrollFade";
 import ProjectCard from "@/components/ProjectCard";
-import { PROJECTS } from "@/data/project"; // Assuming this is where your data lives
+import { PROJECTS } from "@/data/project"; 
+import { FiCode, FiCpu, FiTerminal } from "react-icons/fi";
 
 export default function SelectedWorkSection() {
-  // Filter for your "Top" or "Current" projects. 
-  // For now, I'm taking the first 2 as an example. 
-  // You can change this logic to filter by a 'featured' boolean if you add one.
   const selectedProjects = PROJECTS.slice(0, 2); 
 
   return (
-    <section id="projects" className="mt-32 max-w-4xl mx-auto px-6 md:px-0">
+    <section id="projects" className="mt-32 max-w-4xl mx-auto px-6 md:px-0 relative">
       
-      {/* 1. ANIMATED TITLE */}
-      <div className="mb-12">
+      {/* DECORATIVE: Left Trace Line */}
+      <div className="absolute -left-12 top-0 bottom-0 w-px bg-neutral-900 hidden lg:block">
+         <div className="sticky top-1/2 -translate-y-1/2 w-3 h-3 bg-neutral-950 border border-neutral-700 rounded-full" />
+      </div>
+
+      {/* 1. HEADER: TECHNICAL & MONOCHROME */}
+      <div className="mb-8 flex items-end gap-4 border-b border-neutral-800 pb-4">
         <ScrollReveal
           as="h2"
           baseOpacity={0}
           enableBlur
-          baseRotation={2} // Slightly less rotation for a cleaner feel
+          baseRotation={0}
           blurStrength={10}
-          containerClassName="text-3xl md:text-4xl font-bold text-white mb-4"
+          containerClassName="text-3xl md:text-4xl font-bold text-white tracking-tight"
         >
-          What I'm currently dealing with
+          // 03. Ongoing Crafts
         </ScrollReveal>
         
         <ScrollFade delay={0.2}>
-          <div className="h-1 w-20 bg-neutral-800 rounded-full" />
+          <span className="font-mono text-xs text-neutral-500 mb-1 tracking-widest hidden sm:inline-block">
+            [ プロジェクト • MODULES ]
+          </span>
         </ScrollFade>
       </div>
 
-      {/* 2. PROJECT GRID WITH SCROLL FADE */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {/* 2. SYSTEM STATUS BAR */}
+      <ScrollFade delay={0.1}>
+        <div className="flex justify-between items-center mb-8 font-mono text-[10px] text-neutral-600 tracking-widest uppercase">
+          <div className="flex items-center gap-2">
+            <FiCpu /> KERNEL_TASKS: <span className="text-white">RUNNING</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <FiTerminal /> EXECUTION_MODE: <span className="text-white">DEPLOYED</span>
+          </div>
+        </div>
+      </ScrollFade>
+
+      {/* 3. PROJECT GRID */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
+        {/* Decorative corner markers for the grid area */}
+        <div className="absolute -top-4 -left-4 w-2 h-2 border-t border-l border-neutral-700 hidden md:block" />
+        <div className="absolute -bottom-4 -right-4 w-2 h-2 border-b border-r border-neutral-700 hidden md:block" />
+
         {selectedProjects.map((project, index) => (
           <ScrollFade 
             key={project.id || index} 
-            fromY={40}             // Projects slide up from 40px down
-            blur={10}              // Start blurred
-            delay={index * 0.1}    // Stagger effect (2nd card waits slightly)
+            fromY={40} 
+            blur={10} 
+            delay={index * 0.1} 
           >
             <ProjectCard project={project} />
           </ScrollFade>
         ))}
       </div>
 
-      {/* 3. "VIEW ALL" BUTTON (Optional, keeps flow going) */}
-      <ScrollFade fromY={20} delay={0.3} className="mt-12 text-center">
-        <a 
-          href="https://github.com/mitcheltastic" 
-          target="_blank" 
-          rel="noreferrer"
-          className="inline-block px-8 py-3 text-sm font-mono border border-neutral-700 text-neutral-400 rounded-full hover:bg-white hover:text-black hover:border-white transition-all duration-300"
-        >
-          View Full Project Archive
-        </a>
+      {/* 4. "VIEW ALL" TERMINAL COMMAND BUTTON */}
+      <ScrollFade fromY={20} delay={0.3} className="mt-16 text-center">
+        <div className="relative inline-block group">
+          {/* Decor: Blinking prompt cursor */}
+          <span className="absolute -left-6 top-1/2 -translate-y-1/2 font-mono text-accent text-sm animate-pulse mr-2">
+            &gt;_
+          </span>
+
+          <a 
+            href="https://github.com/mitcheltastic" 
+            target="_blank" 
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 px-8 py-3 text-sm font-mono border border-neutral-800 text-neutral-400 rounded-full 
+                       transition-all duration-300 ease-in-out bg-neutral-950/50
+                       hover:bg-white hover:text-black hover:border-white hover:-translate-y-2 hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]"
+          >
+            <FiCode className="text-xs" />
+            <span>View Full Project Archive</span>
+          </a>
+        </div>
       </ScrollFade>
     </section>
   );

@@ -1,15 +1,21 @@
-// frontend/src/components/LeftSidebar.tsx
+"use client";
+
 import { FaYoutube } from 'react-icons/fa';
 import { FiGithub, FiLinkedin, FiInstagram } from 'react-icons/fi';
+import { motion } from "framer-motion"; // 1. Import Framer Motion
 
 const LeftSidebar = () => {
-  // Added "inline-block" so transforms (translate/scale) actually work
-  // Added "p-2" to give it a slightly larger hit area
-  const iconClass = "inline-block text-gray-400 hover:text-white text-2xl transition-all duration-300 ease-in-out hover:-translate-y-2 hover:scale-110 cursor-pointer p-2";
+  const iconClass = "inline-block text-neutral-500 hover:text-white text-2xl transition-all duration-300 ease-in-out hover:-translate-y-2 hover:scale-110 cursor-pointer p-2";
 
   return (
-    <div className="hidden md:flex flex-col items-center fixed bottom-0 left-8 z-10">
-      <ul className="flex flex-col items-center space-y-2"> {/* reduced space-y because p-2 adds spacing */}
+    // 2. Change to motion.div for entrance animation
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5, delay: 1.5 }} // High delay so it enters AFTER the hero text
+      className="hidden md:flex flex-col items-center fixed bottom-0 left-8 z-50" // z-50 to ensure it stays on top
+    >
+      <ul className="flex flex-col items-center space-y-2">
         {/* GitHub */}
         <li>
           <a 
@@ -63,9 +69,9 @@ const LeftSidebar = () => {
         </li>
       </ul>
       
-      {/* Vertical Line */}
-      <div className="w-px h-24 bg-gray-600 mt-4"></div>
-    </div>
+      {/* Vertical Line - Updated color to match theme */}
+      <div className="w-px h-24 bg-neutral-700 mt-4"></div>
+    </motion.div>
   );
 };
 
