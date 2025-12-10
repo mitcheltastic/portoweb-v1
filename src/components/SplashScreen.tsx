@@ -4,10 +4,10 @@ import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
 
 const TIMINGS = {
-  START_DELAY: 300,
-  MOTTO_REVEAL: 3000,
-  COLOR_FLIP: 500,
-  EXIT_DELAY: 1500,
+  START_DELAY: 1800,
+  MOTTO_REVEAL: 2500,
+  COLOR_FLIP: 600,
+  EXIT_DELAY: 1200,
   SLIDE_UP: 800,
 };
 
@@ -21,6 +21,7 @@ interface SplashScreenProps {
 const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
   const [status, setStatus] = useState<AnimationStatus>('INITIAL');
   const [hasStarted, setHasStarted] = useState(false);
+  const [count, setCount] = useState(0);
 
   useEffect(() => {
     if (isLoading && !hasStarted) {
@@ -28,6 +29,21 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
       setStatus('START_DELAY');
     }
   }, [isLoading, hasStarted]);
+
+  useEffect(() => {
+    if (status === 'START_DELAY') {
+      const interval = setInterval(() => {
+        setCount((prev) => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            return 100;
+          }
+          return prev + Math.floor(Math.random() * 12) + 1; 
+        });
+      }, 100);
+      return () => clearInterval(interval);
+    }
+  }, [status]);
 
   useEffect(() => {
     if (!hasStarted || status === 'DONE') return;
@@ -49,64 +65,103 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
 
   if (status === 'DONE' || !hasStarted) return null;
 
+  const isBooting = status === 'START_DELAY';
   const isMottoOpen = ['MOTTO_REVEAL', 'COLOR_FLIP', 'EXIT_DELAY', 'SLIDE_UP'].includes(status);
   const isColorPhase = ['COLOR_FLIP', 'EXIT_DELAY', 'SLIDE_UP'].includes(status);
   const isSlidingUp = status === 'SLIDE_UP';
 
   const textColor = isColorPhase ? '#ffffff' : '#000000';
   const bgColor = isColorPhase ? 'bg-black' : 'bg-white';
+  const lineColor = isColorPhase ? 'bg-white' : 'bg-black';
 
   return (
     <div
       className={clsx(
-        "fixed inset-0 z-[100] flex items-center justify-center transition-all ease-in-out",
+        "fixed inset-0 z-[100] flex items-center justify-center transition-colors duration-700 ease-in-out cursor-none",
         bgColor,
         `duration-[${TIMINGS.SLIDE_UP}ms]`,
-        isSlidingUp ? "-translate-y-full opacity-0" : "translate-y-0 opacity-100"
+        isSlidingUp ? "-translate-y-full" : "translate-y-0"
       )}
     >
-      {/* CENTERING CONTAINER */}
-      <div className="relative flex flex-col md:flex-row items-center justify-center w-full h-full max-w-6xl mx-auto px-6">
+      {/* 1. BOOT SEQUENCE COUNTER (Visible only at start) */}
+      <div 
+        className={clsx(
+          "absolute inset-0 flex flex-col items-center justify-center z-50 transition-opacity duration-500",
+          isBooting ? "opacity-100" : "opacity-0 pointer-events-none"
+        )}
+      >
+        {/* ⬇️ FIXED: Forced text-black and bold so it stands out against white */}
+        <span className="font-mono text-sm tracking-widest text-black font-bold mb-2">
+          SYSTEM_BOOT_SEQUENCE
+        </span>
+        <span className="font-mono text-4xl font-black text-accent tracking-tighter">
+          {Math.min(count, 100)}%
+        </span>
+      </div>
+
+      {/* 2. MAIN CONTENT CONTAINER */}
+      <div 
+        className={clsx(
+          "relative flex flex-col md:flex-row items-center justify-center w-full h-full max-w-6xl mx-auto px-6 transition-opacity duration-500",
+          isBooting ? "opacity-0 scale-95" : "opacity-100 scale-100"
+        )}
+      >
         
         {/* LOGO IMAGE */}
         <img
           src="/MitchLogo.png"
           alt="Logo"
           className={clsx(
-            "z-20 rounded-full filter invert transition-all duration-1000 ease-out absolute",
-            // Dimensions
-            "w-32 h-32 md:w-48 md:h-48",
-            
-            // ⬇️ FINAL POSITION FIX:
-            // Mobile: Moves UP 120px (Safe distance)
-            // Desktop: Moves LEFT 300px (Guaranteed clearance)
+            "z-30 rounded-full filter invert absolute transition-all duration-[1200ms] cubic-bezier(0.22, 1, 0.36, 1)",
+            "w-32 h-32 md:w-48 md:h-48 shadow-2xl",
             isMottoOpen 
-              ? "-translate-y-[120px] md:translate-y-0 md:-translate-x-[300px] scale-100" 
-              : "translate-y-0 translate-x-0 scale-110"
+              ? "-translate-y-[120px] md:translate-y-0 md:-translate-x-[300px] scale-100 rotate-0" 
+              : "translate-y-0 translate-x-0 scale-125 rotate-180"
           )}
         />
 
-        {/* MOTTO TEXT */}
+        {/* CONNECTING LINE */}
+        <div 
+          className={clsx(
+            "absolute z-20 w-px transition-all duration-[1000ms] delay-200 ease-out",
+            lineColor,
+            isMottoOpen 
+              ? "h-24 md:h-40 opacity-20 translate-y-[-10px] md:translate-y-0 md:-translate-x-[160px]" 
+              : "h-0 opacity-0"
+          )}
+        />
+
+        {/* MOTTO TEXT BLOCK */}
         <div
           className={clsx(
-            "absolute flex flex-col items-center md:items-start justify-center text-center md:text-left transition-all duration-1000 ease-out",
+            "absolute flex flex-col items-center md:items-start justify-center text-center md:text-left transition-all duration-[1200ms] cubic-bezier(0.22, 1, 0.36, 1)",
             "md:translate-y-0",
             
-            // ⬇️ FINAL POSITION FIX:
-            // Mobile: Moves DOWN 40px
-            // Desktop: Moves RIGHT 180px (Matches the logo's aggressive slide)
+            // Motion Blur Effect
             isMottoOpen 
-              ? "opacity-100 translate-y-[40px] md:translate-x-[180px]" 
-              : "opacity-0 translate-y-[20px] md:translate-x-[20px]"
+              ? "opacity-100 blur-0 translate-y-[40px] md:translate-x-[180px]" 
+              : "opacity-0 blur-xl translate-y-[20px] md:translate-x-0"
           )}
           style={{ color: textColor }}
         >
-          <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold whitespace-nowrap leading-tight">
-            If you can imagine it,<br />
-            you can realise it.
-          </h1>
-          <p className="text-sm md:text-base font-normal mt-3 opacity-80">
-            Mitch Affandi | INTJ-A (The Mastermind)
+          <div className="overflow-hidden">
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-extrabold whitespace-nowrap leading-tight tracking-tight">
+              If you can imagine it,<br />
+              you can realise it.
+            </h1>
+          </div>
+          
+          <div className="flex items-center gap-3 mt-4 overflow-hidden">
+            <span className={clsx("h-px w-8 transition-all duration-700 delay-500", lineColor)} />
+            <p className="text-sm md:text-base font-mono font-normal opacity-80">
+              Mitch Affandi | INTJ-A 
+              <span className="hidden sm:inline"> (The Mastermind)</span>
+            </p>
+          </div>
+          
+          {/* Japanese Subtitle */}
+          <p className="text-[10px] font-mono mt-1 opacity-40 tracking-[0.2em] transition-opacity duration-1000 delay-700">
+            システム起動 // SYSTEM_READY
           </p>
         </div>
 
