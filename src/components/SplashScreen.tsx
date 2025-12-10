@@ -28,14 +28,13 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
   useEffect(() => {
     if (isLoading && !hasStarted) {
       setHasStarted(true);
-      // Short timeout to ensure React renders the "INITIAL" state (hidden) first
       setTimeout(() => {
         setStatus('START_DELAY');
       }, 50);
     }
   }, [isLoading, hasStarted]);
 
-  // 2. Cursor Blinking Logic
+  // 2. Cursor Blink
   useEffect(() => {
     if (status === 'START_DELAY') {
       const cursorInterval = setInterval(() => {
@@ -82,17 +81,12 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
 
   if (status === 'DONE' || !hasStarted) return null;
 
-  // --- DERIVED STATE FLAGS ---
-  
-  // 1. HIDDEN STATE: Include 'INITIAL' here to prevent the flash!
+  // FLAGS
   const isHiddenPhase = ['INITIAL', 'START_DELAY'].includes(status);
-  
-  // 2. ANIMATION PHASES
   const isMottoOpen = ['MOTTO_REVEAL', 'COLOR_FLIP', 'EXIT_DELAY', 'SLIDE_UP'].includes(status);
   const isColorPhase = ['COLOR_FLIP', 'EXIT_DELAY', 'SLIDE_UP'].includes(status);
   const isSlidingUp = status === 'SLIDE_UP';
 
-  // 3. STYLES
   const textColor = isColorPhase ? '#ffffff' : '#000000';
   const bgColor = isColorPhase ? 'bg-black' : 'bg-white';
   const lineColor = isColorPhase ? 'bg-white' : 'bg-black';
@@ -100,10 +94,8 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
   return (
     <div
       className={clsx(
-        // ⬇️ FIX: Restored 'transition-all' so the slide up works
         "fixed inset-0 z-[100] flex items-center justify-center transition-all ease-in-out cursor-none",
         bgColor,
-        // Match transition duration to the SLIDE_UP timing
         `duration-[${TIMINGS.SLIDE_UP}ms]`,
         isSlidingUp ? "-translate-y-full" : "translate-y-0"
       )}
@@ -112,7 +104,6 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
       <div 
         className={clsx(
           "absolute inset-0 flex flex-col items-center justify-center z-50 transition-all duration-700 ease-out",
-          // Show only during start delay, otherwise hide
           status === 'START_DELAY' ? "opacity-100 scale-100" : "opacity-0 scale-110 pointer-events-none"
         )}
       >
@@ -127,7 +118,6 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
             )} 
           />
         </div>
-
         <span className="font-mono text-5xl font-black text-neutral-800 tracking-tighter">
           {Math.min(count, 100)}%
         </span>
@@ -137,7 +127,6 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
       <div 
         className={clsx(
           "relative flex flex-col md:flex-row items-center justify-center w-full h-full max-w-6xl mx-auto px-6 transition-opacity duration-500",
-          // ⬇️ FIX: Use isHiddenPhase so it stays hidden during INITIAL state too
           isHiddenPhase ? "opacity-0 scale-95" : "opacity-100 scale-100"
         )}
       >
@@ -155,14 +144,17 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
           )}
         />
 
-        {/* CONNECTING LINE */}
+        {/* ⬇️ CONNECTING LINE FIX 
+           - Mobile: Horizontal Line (w-24, h-px), positioned Y=-40px to separate logo/text.
+           - Desktop: Vertical Line (w-px, h-40), positioned X=-160px to separate left/right.
+        */}
         <div 
           className={clsx(
-            "absolute z-20 w-px transition-all duration-[1000ms] delay-200 ease-out",
+            "absolute z-20 transition-all duration-[1000ms] delay-200 ease-out",
             lineColor,
             isMottoOpen 
-              ? "h-24 md:h-40 opacity-20 translate-y-[-10px] md:translate-y-0 md:-translate-x-[160px]" 
-              : "h-0 opacity-0"
+              ? "opacity-20 w-24 h-px md:w-px md:h-40 -translate-y-[40px] md:translate-y-0 md:-translate-x-[160px]" 
+              : "opacity-0 w-0 h-0"
           )}
         />
 
@@ -171,8 +163,6 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
           className={clsx(
             "absolute flex flex-col items-center md:items-start justify-center text-center md:text-left transition-all duration-[1200ms] cubic-bezier(0.22, 1, 0.36, 1)",
             "md:translate-y-0",
-            
-            // Motion Blur Effect
             isMottoOpen 
               ? "opacity-100 blur-0 translate-y-[40px] md:translate-x-[180px]" 
               : "opacity-0 blur-xl translate-y-[20px] md:translate-x-0"
@@ -194,7 +184,6 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
             </p>
           </div>
           
-          {/* Japanese Subtitle */}
           <p className="text-[10px] font-mono mt-1 opacity-40 tracking-[0.2em] transition-opacity duration-1000 delay-700">
             システム起動 // SYSTEM_READY
           </p>
