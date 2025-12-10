@@ -73,7 +73,8 @@ const HeroSection = () => {
             transition={{ duration: 0.5, delay: 0.5 }}
             className="text-3xl sm:text-5xl font-bold text-neutral-400 mb-8"
           >
-            Architecting <span className="text-white">Digital Ecosystems</span>.
+            {/* ⬇️ CHANGED: More general wording */}
+            Architecting <span className="text-white">Scalable Solutions</span>.
           </motion.h2>
 
           {/* 6. THE BIO */}
