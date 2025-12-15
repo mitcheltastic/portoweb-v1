@@ -5,12 +5,12 @@ import { FiGithub, FiLinkedin, FiInstagram } from 'react-icons/fi';
 import { motion } from "framer-motion";
 
 const LeftSidebar = () => {
-  // ⬇️ UPDATED: 
-  // - Base Color: Neutral-600 (Light) / Neutral-500 (Dark)
-  // - Hover Color: Black (Light) / White (Dark)
+  // ⬇️ FIXED: 
+  // - Base: Neutral Grey (Safe for both modes)
+  // - Hover: Uses [var(--foreground)] to guarantee Black in Light / White in Dark
   const iconClass = "inline-block text-2xl transition-all duration-300 ease-in-out hover:-translate-y-2 hover:scale-110 cursor-pointer p-2 " +
-                    "text-neutral-600 dark:text-neutral-500 " + 
-                    "hover:text-black dark:hover:text-white";
+                    "text-neutral-500 " + 
+                    "hover:text-[var(--foreground)]";
 
   return (
     <motion.div 
@@ -73,8 +73,8 @@ const LeftSidebar = () => {
         </li>
       </ul>
       
-      {/* Vertical Line - ⬇️ UPDATED: Adaptive Color */}
-      <div className="w-px h-24 bg-neutral-400 dark:bg-neutral-700 mt-4"></div>
+      {/* Vertical Line - ⬇️ FIXED: Hardcoded hex/rgba for safety */}
+      <div className="w-px h-24 mt-4" style={{ backgroundColor: "rgba(128, 128, 128, 0.5)" }}></div>
     </motion.div>
   );
 };

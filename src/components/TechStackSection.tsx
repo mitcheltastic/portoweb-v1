@@ -11,30 +11,30 @@ import {
 } from "react-icons/si";
 import { FiCpu } from "react-icons/fi";
 
-// DATA: Tech Stack Groups
+// DATA: Tech Stack Groups with Official Brand Colors
 const ROW_1 = [
-  { name: "Golang", icon: SiGo },
-  { name: "Redis", icon: SiRedis },
-  { name: "Google Cloud", icon: SiGooglecloud },
-  { name: "Docker", icon: SiDocker },
-  { name: "PostgreSQL", icon: SiPostgresql },
-  { name: "Node.js", icon: SiNodedotjs },
-  { name: "Linux", icon: SiLinux },
-  { name: "Nginx", icon: SiNginx },
-  { name: "MySQL", icon: SiMysql },
+  { name: "Golang", icon: SiGo, color: "#00ADD8" },
+  { name: "Redis", icon: SiRedis, color: "#DC382D" },
+  { name: "Google Cloud", icon: SiGooglecloud, color: "#4285F4" },
+  { name: "Docker", icon: SiDocker, color: "#2496ED" },
+  { name: "PostgreSQL", icon: SiPostgresql, color: "#4169E1" },
+  { name: "Node.js", icon: SiNodedotjs, color: "#339933" },
+  { name: "Linux", icon: SiLinux, color: "#000000" }, // Black in Light Mode
+  { name: "Nginx", icon: SiNginx, color: "#009639" },
+  { name: "MySQL", icon: SiMysql, color: "#4479A1" },
 ];
 
 const ROW_2 = [
-  { name: "TypeScript", icon: SiTypescript },
-  { name: "Next.js", icon: SiNextdotjs },
-  { name: "React", icon: SiReact },
-  { name: "Tailwind", icon: SiTailwindcss },
-  { name: "Framer Motion", icon: SiFramer },
-  { name: "Git", icon: SiGit },
-  { name: "GitHub", icon: SiGithub },
-  { name: "Postman", icon: SiPostman },
-  { name: "Figma", icon: SiFigma },
-  { name: "Notion", icon: SiNotion },
+  { name: "TypeScript", icon: SiTypescript, color: "#3178C6" },
+  { name: "Next.js", icon: SiNextdotjs, color: "#000000" }, // Black in Light Mode
+  { name: "React", icon: SiReact, color: "#61DAFB" },
+  { name: "Tailwind", icon: SiTailwindcss, color: "#06B6D4" },
+  { name: "Framer Motion", icon: SiFramer, color: "#0055FF" },
+  { name: "Git", icon: SiGit, color: "#F05032" },
+  { name: "GitHub", icon: SiGithub, color: "#181717" },
+  { name: "Postman", icon: SiPostman, color: "#FF6C37" },
+  { name: "Figma", icon: SiFigma, color: "#F24E1E" },
+  { name: "Notion", icon: SiNotion, color: "#000000" },
 ];
 
 export default function TechStackSection() {
@@ -77,23 +77,40 @@ export default function TechStackSection() {
       {[...items, ...items, ...items].map((tech, i) => (
         <div 
           key={i}
-          // ⬇️ UPDATED: 
-          // - Bg: White/50 -> Dark/50
-          // - Border: Light Gray -> Dark Gray
-          // - Text: Dark Gray -> Light Gray
-          // - Hover: Inverted colors + Shadow
           className="flex items-center gap-2 px-6 py-3 rounded-full 
-                     bg-white/50 dark:bg-neutral-900/50 
-                     border border-neutral-200 dark:border-neutral-800 
-                     text-neutral-600 dark:text-neutral-400 
-                     transition-all duration-300 
-                     hover:border-neutral-400 dark:hover:border-white 
-                     hover:text-black dark:hover:text-white 
-                     hover:bg-neutral-100 dark:hover:bg-neutral-800 
-                     hover:shadow-[0_0_15px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]
-                     group cursor-default"
+                     transition-all duration-300 group cursor-default
+                     border
+                     
+                     /* LIGHT MODE: White Bg, Dark Border */
+                     bg-white/50 border-neutral-300 
+                     text-neutral-700
+                     hover:border-neutral-400 hover:bg-white hover:shadow-md
+
+                     /* DARK MODE: Dark Bg, Dark Border */
+                     dark:bg-neutral-900/50 dark:border-neutral-800 
+                     dark:text-neutral-400
+                     dark:hover:border-white dark:hover:text-white dark:hover:bg-neutral-800 
+                     dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]"
         >
-          <tech.icon className="text-lg group-hover:scale-110 transition-transform duration-300" />
+          {/* ICON: 
+              - Light Mode: Uses inline style 'color' (Brand Color)
+              - Dark Mode: Uses 'currentColor' (Grey -> White on hover)
+          */}
+          <div 
+            className="text-lg transition-transform duration-300 group-hover:scale-110"
+            // This applies the brand color ONLY in Light Mode (via CSS variable check or simply default)
+            // But since Tailwind dark mode is class-based, we can use a CSS variable trick or simple inline style override
+            style={{ color: "var(--tech-color)" } as React.CSSProperties}
+          >
+             {/* TRICK: We set a local CSS variable '--tech-color' to the brand color.
+                In CSS (below), we can decide when to use it.
+             */}
+             <tech.icon 
+                style={{ color: tech.color }} // 👈 Force Brand Color by default (Light Mode)
+                className="dark:!text-current" // 👈 Override with 'currentColor' in Dark Mode
+             />
+          </div>
+
           <span className="font-mono text-sm tracking-wide">{tech.name}</span>
         </div>
       ))}
@@ -105,7 +122,6 @@ export default function TechStackSection() {
       <div className="max-w-4xl mx-auto px-6 md:px-0 mb-12">
         
         {/* HEADER */}
-        {/* ⬇️ UPDATED: Border Color */}
         <div className="flex items-end gap-4 border-b border-neutral-200 dark:border-neutral-800 pb-4">
           <ScrollReveal
             as="h2"
@@ -113,8 +129,8 @@ export default function TechStackSection() {
             enableBlur
             baseRotation={0}
             blurStrength={10}
-            // ⬇️ UPDATED: Text Color
-            containerClassName="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white tracking-tight"
+            // ⬇️ FIXED: Uses [var(--foreground)] for perfect contrast
+            containerClassName="text-3xl md:text-4xl font-bold text-[var(--foreground)] tracking-tight"
           >
             {/* Escape slash */}
             {'//'} 04. Technical Arsenal
@@ -129,7 +145,8 @@ export default function TechStackSection() {
         {/* CONTEXT */}
         <ScrollFade delay={0.1}>
           <div className="flex items-center gap-2 font-mono text-[10px] text-neutral-500 dark:text-neutral-600 tracking-widest uppercase mb-8">
-            <FiCpu /> SYSTEM_CAPABILITIES: <span className="text-neutral-900 dark:text-white">OPTIMIZED</span>
+            {/* ⬇️ FIXED: Status text uses foreground */}
+            <FiCpu /> SYSTEM_CAPABILITIES: <span className="text-[var(--foreground)]">OPTIMIZED</span>
           </div>
         </ScrollFade>
       </div>

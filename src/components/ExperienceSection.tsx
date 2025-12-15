@@ -75,7 +75,6 @@ export default function ExperienceSection({ projects }: Props) {
     <section id="experience" className="mt-32 w-full overflow-hidden relative">
       
       {/* 1. HEADER: TECHNICAL & MONOCHROME */}
-      {/* ⬇️ UPDATED: Border Color */}
       <div className="max-w-4xl mx-auto px-6 md:px-0 mb-12 flex items-end gap-4 border-b border-neutral-200 dark:border-neutral-800 pb-4">
         <ScrollReveal
           as="h2"
@@ -83,8 +82,8 @@ export default function ExperienceSection({ projects }: Props) {
           enableBlur
           baseRotation={0}
           blurStrength={10}
-          // ⬇️ UPDATED: Text Color
-          containerClassName="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white tracking-tight"
+          // ⬇️ FIXED: Uses [var(--foreground)] to guarantee visibility in both modes
+          containerClassName="text-3xl md:text-4xl font-bold text-[var(--foreground)] tracking-tight"
         >
           {/* Escape the slash */}
           {'//'} 02. Experience
@@ -116,12 +115,14 @@ export default function ExperienceSection({ projects }: Props) {
 
           <div 
             ref={containerRef}
-            // ⬇️ UPDATED: Background & Borders
-            className="relative w-full py-8 cursor-grab active:cursor-grabbing border-y border-neutral-200 dark:border-neutral-900 bg-neutral-100/50 dark:bg-neutral-950/30"
+            // ⬇️ UPDATED: Background uses standard Tailwind utility colors for safety
+            className="relative w-full py-8 cursor-grab active:cursor-grabbing 
+                       border-y border-neutral-200 dark:border-neutral-900 
+                       bg-neutral-100 dark:bg-neutral-950/30"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
           >
-            {/* Faded Edges (Uses var(--background) to auto-switch white/black) */}
+            {/* Faded Edges (Uses var(--background) to match the main page background) */}
             <div className="absolute top-0 left-0 w-16 md:w-32 h-full bg-gradient-to-r from-[var(--background)] to-transparent z-10 pointer-events-none" />
             <div className="absolute top-0 right-0 w-16 md:w-32 h-full bg-gradient-to-l from-[var(--background)] to-transparent z-10 pointer-events-none" />
 
@@ -139,7 +140,6 @@ export default function ExperienceSection({ projects }: Props) {
           </div>
           
           {/* DECORATIVE: Bottom Ruler */}
-          {/* ⬇️ UPDATED: Ruler Colors */}
           <div className="max-w-4xl mx-auto mt-2 h-px bg-neutral-200 dark:bg-neutral-900 flex justify-between">
             {[...Array(20)].map((_, i) => (
               <div key={i} className="w-px h-1 bg-neutral-300 dark:bg-neutral-800" />

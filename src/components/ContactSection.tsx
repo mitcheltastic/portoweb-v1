@@ -20,8 +20,8 @@ export default function ContactSection() {
           enableBlur
           baseRotation={0}
           blurStrength={10}
-          // ⬇️ UPDATED: Text color
-          containerClassName="text-4xl font-bold text-neutral-900 dark:text-white mb-2"
+          // ⬇️ FIXED: Uses [var(--foreground)] to force visibility
+          containerClassName="text-4xl font-bold text-[var(--foreground)] mb-2"
         >
           Initialize Connection
         </ScrollReveal>
@@ -39,9 +39,10 @@ export default function ContactSection() {
         <div className="flex flex-col justify-between">
           <div>
             <ScrollFade delay={0.2} toggleActions={keepVisible}>
-              <h3 className="text-xl font-bold text-neutral-900 dark:text-white mb-4 flex items-center gap-2">
+              {/* ⬇️ FIXED: Heading uses foreground variable */}
+              <h3 className="text-xl font-bold text-[var(--foreground)] mb-4 flex items-center gap-2">
                 <FiCpu className="animate-pulse text-neutral-500 dark:text-neutral-400" /> 
-                System Status: <span className="text-neutral-900 dark:text-white">ONLINE</span>
+                System Status: <span className="text-[var(--foreground)]">ONLINE</span>
               </h3>
               <p className="text-neutral-600 dark:text-neutral-400 leading-relaxed mb-6">
                 Whether you have a question about my backend architecture, want to collaborate on an IoT project, or just want to discuss the latest anime season—my inbox is always open.
@@ -56,7 +57,7 @@ export default function ContactSection() {
                   {[40, 70, 30, 80, 50, 90, 20, 60, 40, 75, 35, 85].map((height, i) => (
                     <div 
                       key={i}
-                      // ⬇️ UPDATED: Bar Color
+                      // ⬇️ UPDATED: Bar Color (Safe Grey)
                       className="w-full bg-neutral-400 dark:bg-neutral-600 rounded-t-sm animate-pulse"
                       style={{ 
                         height: `${height}%`,
@@ -75,17 +76,17 @@ export default function ContactSection() {
           </div>
 
           <ScrollFade delay={0.4} toggleActions={keepVisible}>
-             <a 
-               href="mailto:mitch.affandi22@gmail.com"
-               // ⬇️ UPDATED: Link Text Colors
-               className="flex items-center gap-3 text-neutral-600 dark:text-neutral-300 hover:text-neutral-900 dark:hover:text-white transition-colors duration-300 group"
-             >
-               {/* ⬇️ UPDATED: Icon Circle Colors */}
-               <div className="w-10 h-10 border border-neutral-300 dark:border-neutral-700 rounded-full flex items-center justify-center group-hover:border-neutral-900 dark:group-hover:border-white transition-colors">
-                 <FiMail />
-               </div>
-               <span className="font-mono text-sm">mitch.affandi22@gmail.com</span>
-             </a>
+              <a 
+                href="mailto:mitch.affandi22@gmail.com"
+                // ⬇️ FIXED: Link hover uses foreground variable
+                className="flex items-center gap-3 text-neutral-600 dark:text-neutral-300 hover:text-[var(--foreground)] transition-colors duration-300 group"
+              >
+                {/* ⬇️ FIXED: Icon Circle Border */}
+                <div className="w-10 h-10 border border-neutral-300 dark:border-neutral-700 rounded-full flex items-center justify-center group-hover:border-[var(--foreground)] transition-colors">
+                  <FiMail />
+                </div>
+                <span className="font-mono text-sm">mitch.affandi22@gmail.com</span>
+              </a>
           </ScrollFade>
         </div>
 
@@ -96,10 +97,10 @@ export default function ContactSection() {
               <input 
                 type="text" 
                 placeholder="Name / Alias" 
-                // ⬇️ UPDATED: Input Field Colors
+                // ⬇️ FIXED: Text Input Color uses [var(--foreground)] so typed text is visible
                 className="w-full bg-neutral-100 dark:bg-neutral-900/50 
                            border border-neutral-200 dark:border-neutral-800 
-                           rounded px-4 py-3 text-neutral-900 dark:text-neutral-200 
+                           rounded px-4 py-3 text-[var(--foreground)]
                            focus:outline-none focus:border-neutral-400 dark:focus:border-white 
                            focus:bg-white dark:focus:bg-neutral-900 
                            transition-all duration-300 placeholder:text-neutral-400 dark:placeholder:text-neutral-600"
@@ -114,7 +115,7 @@ export default function ContactSection() {
                 placeholder="Email Frequency" 
                 className="w-full bg-neutral-100 dark:bg-neutral-900/50 
                            border border-neutral-200 dark:border-neutral-800 
-                           rounded px-4 py-3 text-neutral-900 dark:text-neutral-200 
+                           rounded px-4 py-3 text-[var(--foreground)]
                            focus:outline-none focus:border-neutral-400 dark:focus:border-white 
                            focus:bg-white dark:focus:bg-neutral-900 
                            transition-all duration-300 placeholder:text-neutral-400 dark:placeholder:text-neutral-600"
@@ -129,7 +130,7 @@ export default function ContactSection() {
                 placeholder="Input Message Data..." 
                 className="w-full bg-neutral-100 dark:bg-neutral-900/50 
                            border border-neutral-200 dark:border-neutral-800 
-                           rounded px-4 py-3 text-neutral-900 dark:text-neutral-200 
+                           rounded px-4 py-3 text-[var(--foreground)]
                            focus:outline-none focus:border-neutral-400 dark:focus:border-white 
                            focus:bg-white dark:focus:bg-neutral-900 
                            transition-all duration-300 placeholder:text-neutral-400 dark:placeholder:text-neutral-600 resize-none"

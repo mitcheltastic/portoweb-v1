@@ -12,19 +12,19 @@ const RightSidebar = () => {
     >
       <a 
         href="mailto:mitch.affandi22@gmail.com" 
-        // ⬇️ UPDATED: 
-        // - Base: Neutral-600 (Light) / Neutral-500 (Dark)
-        // - Hover: Black (Light) / White (Dark)
+        // ⬇️ FIXED: 
+        // - Base: Neutral Grey (Safe for both)
+        // - Hover: Uses [var(--foreground)] to guarantee Black in Light / White in Dark
         className="text-sm tracking-widest transition-all duration-300 ease-in-out hover:-translate-y-2 
-                   text-neutral-600 dark:text-neutral-500 
-                   hover:text-black dark:hover:text-white"
+                   text-neutral-500 
+                   hover:text-[var(--foreground)]"
         style={{ writingMode: 'vertical-rl' }}
       >
         mitch.affandi22@gmail.com
       </a>
       
-      {/* ⬇️ UPDATED: Line Color */}
-      <div className="w-px h-24 mt-6 bg-neutral-400 dark:bg-neutral-700"></div>
+      {/* ⬇️ FIXED: Hardcoded rgba for the line to ensure visibility on both backgrounds */}
+      <div className="w-px h-24 mt-6" style={{ backgroundColor: "rgba(128, 128, 128, 0.5)" }}></div>
     </motion.div>
   );
 };

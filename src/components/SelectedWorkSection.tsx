@@ -14,14 +14,11 @@ export default function SelectedWorkSection() {
     <section id="projects" className="mt-32 max-w-4xl mx-auto px-6 md:px-0 relative">
       
       {/* DECORATIVE: Left Trace Line */}
-      {/* ⬇️ UPDATED: Line color */}
       <div className="absolute -left-12 top-0 bottom-0 w-px bg-neutral-200 dark:bg-neutral-900 hidden lg:block">
-         {/* ⬇️ UPDATED: Dot colors */}
          <div className="sticky top-1/2 -translate-y-1/2 w-3 h-3 bg-white dark:bg-neutral-950 border border-neutral-300 dark:border-neutral-700 rounded-full" />
       </div>
 
       {/* 1. HEADER: TECHNICAL & MONOCHROME */}
-      {/* ⬇️ UPDATED: Border color */}
       <div className="mb-8 flex items-end gap-4 border-b border-neutral-200 dark:border-neutral-800 pb-4">
         <ScrollReveal
           as="h2"
@@ -29,10 +26,9 @@ export default function SelectedWorkSection() {
           enableBlur
           baseRotation={0}
           blurStrength={10}
-          // ⬇️ UPDATED: Text color
-          containerClassName="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white tracking-tight"
+          // ⬇️ FIXED: Uses [var(--foreground)] to force Black in Light / White in Dark
+          containerClassName="text-3xl md:text-4xl font-bold text-[var(--foreground)] tracking-tight"
         >
-          {/* Escape slash */}
           {'//'} 03. Ongoing Crafts
         </ScrollReveal>
         
@@ -47,19 +43,18 @@ export default function SelectedWorkSection() {
       <ScrollFade delay={0.1}>
         <div className="flex justify-between items-center mb-8 font-mono text-[10px] text-neutral-500 dark:text-neutral-600 tracking-widest uppercase">
           <div className="flex items-center gap-2">
-            {/* ⬇️ UPDATED: Status text color */}
-            <FiCpu /> KERNEL_TASKS: <span className="text-neutral-900 dark:text-white">RUNNING</span>
+            {/* ⬇️ FIXED: Uses foreground for high contrast status */}
+            <FiCpu /> KERNEL_TASKS: <span className="text-[var(--foreground)]">RUNNING</span>
           </div>
           <div className="flex items-center gap-2">
-            <FiTerminal /> EXECUTION_MODE: <span className="text-neutral-900 dark:text-white">DEPLOYED</span>
+            <FiTerminal /> EXECUTION_MODE: <span className="text-[var(--foreground)]">DEPLOYED</span>
           </div>
         </div>
       </ScrollFade>
 
       {/* 3. PROJECT GRID */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 relative">
-        {/* Decorative corner markers for the grid area */}
-        {/* ⬇️ UPDATED: Marker colors */}
+        {/* Decorative corner markers */}
         <div className="absolute -top-4 -left-4 w-2 h-2 border-t border-l border-neutral-300 dark:border-neutral-700 hidden md:block" />
         <div className="absolute -bottom-4 -right-4 w-2 h-2 border-b border-r border-neutral-300 dark:border-neutral-700 hidden md:block" />
 
@@ -70,7 +65,6 @@ export default function SelectedWorkSection() {
             blur={10} 
             delay={index * 0.1} 
           >
-            {/* ProjectCard handles its own light/dark mode internally now */}
             <ProjectCard project={project} />
           </ScrollFade>
         ))}
@@ -88,17 +82,18 @@ export default function SelectedWorkSection() {
             href="https://github.com/mitcheltastic" 
             target="_blank" 
             rel="noreferrer"
-            // ⬇️ UPDATED: 
-            // - Border: Light Gray -> Dark Gray
-            // - Bg: White/50 -> Dark/50
-            // - Hover: Turns Black (Light Mode) / Turns White (Dark Mode)
-            className="inline-flex items-center gap-2 px-8 py-3 text-sm font-mono 
+            className="inline-flex items-center gap-2 px-8 py-3 text-sm font-mono rounded-full 
+                       transition-all duration-300 ease-in-out 
                        border border-neutral-300 dark:border-neutral-800 
-                       text-neutral-600 dark:text-neutral-400 rounded-full 
-                       transition-all duration-300 ease-in-out bg-white/50 dark:bg-neutral-950/50
-                       hover:bg-neutral-900 dark:hover:bg-white 
-                       hover:text-white dark:hover:text-black 
-                       hover:border-transparent 
+                       
+                       /* Light Mode: White Button -> Black Hover */
+                       bg-white/50 text-neutral-600 
+                       hover:bg-black hover:text-white hover:border-transparent
+
+                       /* Dark Mode: Dark Button -> White Hover */
+                       dark:bg-neutral-950/50 dark:text-neutral-400 
+                       dark:hover:bg-white dark:hover:text-black
+                       
                        hover:-translate-y-2 hover:shadow-lg dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.1)]"
           >
             <FiCode className="text-xs" />

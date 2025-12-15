@@ -9,7 +9,6 @@ export default function AboutSection() {
     <section id="about" className="mt-32 max-w-4xl mx-auto px-6 md:px-0 relative">
       
       {/* DECORATIVE: Background line trace */}
-      {/* ⬇️ UPDATED: Light gray in light mode, Dark gray in dark mode */}
       <div className="absolute left-0 top-0 bottom-0 w-px bg-neutral-200 dark:bg-neutral-900 md:hidden" />
 
       {/* 1. HEADER: TECHNICAL & MONOCHROME */}
@@ -20,10 +19,9 @@ export default function AboutSection() {
           enableBlur
           baseRotation={0}
           blurStrength={10}
-          // ⬇️ UPDATED: Black text in light mode, White in dark mode
-          containerClassName="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white tracking-tight"
+          // ⬇️ FIXED: Uses [var(--foreground)] to force Black in Light Mode / White in Dark Mode
+          containerClassName="text-3xl md:text-4xl font-bold text-[var(--foreground)] tracking-tight"
         >
-          {/* Use curly braces to escape the forward slash if needed, or just string */}
           {'//'} 01. About Me
         </ScrollReveal>
         <ScrollFade delay={0.2}>
@@ -36,15 +34,15 @@ export default function AboutSection() {
       <div className="flex flex-col md:flex-row items-start gap-12">
         
         {/* 🧠 LEFT: TEXT CONTENT (LOG ENTRIES) */}
-        {/* ⬇️ UPDATED: Base text color */}
         <div className="md:w-3/5 text-neutral-600 dark:text-neutral-400 text-base leading-relaxed space-y-6">
           <ScrollFade>
             <div className="border-l-2 border-neutral-200 dark:border-neutral-800 pl-4 relative">
               <span className="absolute -left-[5px] -top-1 text-neutral-400 dark:text-neutral-800 text-[10px]">■</span>
               <p>
-                I don&apos;t just write code—I engineer <span className="text-neutral-900 dark:text-white font-medium">ecosystems</span>. 
+                {/* ⬇️ FIXED: Highlight uses foreground variable */}
+                I don&apos;t just write code—I engineer <span className="text-[var(--foreground)] font-medium">ecosystems</span>. 
                 As a Telecommunications student, I am obsessed with the invisible threads that connect the world. 
-                My passion lies in bridging the gap between <span className="text-neutral-900 dark:text-white">raw hardware signals</span> and <span className="text-neutral-900 dark:text-white">scalable software architectures</span>.
+                My passion lies in bridging the gap between <span className="text-[var(--foreground)] font-medium">raw hardware signals</span> and <span className="text-[var(--foreground)] font-medium">scalable software architectures</span>.
               </p>
             </div>
           </ScrollFade>
@@ -53,7 +51,8 @@ export default function AboutSection() {
             <div className="border-l-2 border-neutral-200 dark:border-neutral-800 pl-4 relative">
                <span className="absolute -left-[5px] -top-1 text-neutral-400 dark:text-neutral-800 text-[10px]">■</span>
               <p>
-                While others focus on the surface, I thrive in the depths of <span className="text-neutral-900 dark:text-white">Backend Engineering</span> and <span className="text-neutral-900 dark:text-white">IoT</span>. 
+                {/* ⬇️ FIXED: Highlight uses foreground variable */}
+                While others focus on the surface, I thrive in the depths of <span className="text-[var(--foreground)] font-medium">Backend Engineering</span> and <span className="text-[var(--foreground)] font-medium">IoT</span>. 
                 Whether it&apos;s orchestrating real-time sensor networks or optimizing high-performance databases, 
                 I build the robust infrastructure that allows digital products to survive in the real world.
               </p>
@@ -62,7 +61,8 @@ export default function AboutSection() {
 
           <ScrollFade>
             <div className="pt-4">
-              <h3 className="text-sm font-mono text-neutral-900 dark:text-white mb-4 flex items-center gap-2">
+              {/* ⬇️ FIXED: Heading uses foreground variable */}
+              <h3 className="text-sm font-mono text-[var(--foreground)] mb-4 flex items-center gap-2">
                 <FiZap /> INSTALLED_MODULES.json
               </h3>
               
@@ -78,10 +78,10 @@ export default function AboutSection() {
                 ].map((tech, i) => (
                   <li 
                     key={i} 
-                    // ⬇️ UPDATED: Hover states now work for both modes
-                    className="flex items-center gap-2 text-neutral-500 dark:text-neutral-500 hover:text-neutral-900 dark:hover:text-white transition-colors duration-300 group cursor-default"
+                    // ⬇️ FIXED: Hover state uses foreground variable
+                    className="flex items-center gap-2 text-neutral-500 hover:text-[var(--foreground)] transition-colors duration-300 group cursor-default"
                   >
-                    <span className="text-neutral-400 dark:text-neutral-700 group-hover:text-neutral-900 dark:group-hover:text-white">▸</span> 
+                    <span className="text-neutral-400 dark:text-neutral-700 group-hover:text-[var(--foreground)]">▸</span> 
                     {tech}
                   </li>
                 ))}
@@ -107,7 +107,6 @@ export default function AboutSection() {
                          group-hover:rotate-6 group-hover:translate-x-4 
                          border border-neutral-200 dark:border-neutral-800/50"
             >
-              {/* ⬇️ UPDATED: Use Next/Image ideally, but kept img for now. Adjusted opacity for light mode. */}
               <img
                 src="/MitchAboutMe.jpg"
                 alt=""
@@ -141,7 +140,7 @@ export default function AboutSection() {
           </div>
 
           {/* Vertical Japanese Text Decoration */}
-          <div className="absolute -left-8 bottom-0 font-mono text-[10px] text-neutral-300 dark:text-neutral-700 writing-vertical-rl hidden md:block tracking-widest">
+          <div className="absolute -left-8 bottom-0 font-mono text-[10px] text-neutral-400 dark:text-neutral-700 writing-vertical-rl hidden md:block tracking-widest">
             システム稼働中
           </div>
 
