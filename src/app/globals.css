@@ -1,52 +1,54 @@
 @import "tailwindcss";
 
 :root {
-  /* Default (Light Mode) Colors */
+  /* =========================================
+     LIGHT MODE (Default)
+     ========================================= */
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #171717; /* Rich Black text for visibility */
+  
+  /* ⬇️ NEW: Explicit Header Variables to fix the dark header bug */
+  --header-bg: rgba(255, 255, 255, 0.85); /* White glassmorphism */
+  --header-border: #e5e5e5;               /* Light gray border */
 
-  /* Global Variables previously inside @theme */
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  /* Global Fonts */
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-space-mono);
 }
 
-/* ✅ ADD THIS BLOCK HERE */
+.dark {
+  /* =========================================
+     DARK MODE (Applied when .dark class exists)
+     ========================================= */
+  --background: #000000; /* Pure black */
+  --foreground: #ededed; /* White text */
+
+  /* ⬇️ NEW: Dark Mode Header Variables */
+  --header-bg: rgba(10, 10, 10, 0.9);     /* Dark glassmorphism */
+  --header-border: #262626;               /* Dark border */
+}
+
+/* ✅ GLOBAL SETTINGS */
 html {
   scroll-behavior: smooth;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Dark Mode Overrides */
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  /* Now using your custom font variable for better typography */
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
   
-  /* Apply global background and text color based on variables */
+  /* Apply the variables */
   background: var(--background);
   color: var(--foreground);
+
+  /* ⬇️ SMOOTH THEME TRANSITION */
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Custom Keyframe for a subtle pulse effect on the motto */
-@keyframes text-pulse {
-  0%, 100% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: scale(1.01); /* Subtle scaling */
-    opacity: 0.98;
-  }
-}
+/* =========================================
+   ANIMATIONS & UTILITIES
+   ========================================= */
 
-/* In globals.css */
+/* Cursor Blink for Terminal Effect */
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
@@ -55,31 +57,42 @@ body {
 .typing-cursor::after {
   content: "▋";
   margin-left: 4px;
-  color: currentColor; /* 👈 Matches the text color (gray/accent) automatically */
+  color: currentColor; 
   animation: blink 1s step-end infinite;
+}
+
+/* Subtle Pulse for Headings */
+@keyframes text-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.01);
+    opacity: 0.98;
+  }
 }
 
 .animate-text-pulse {
   animation: text-pulse 2s ease-in-out infinite;
 }
 
-/* ===== Nav underline animation ===== */
-
+/* Nav Link Underline Animation */
 .nav-link {
   position: relative;
   display: inline-flex;
   align-items: center;
-  column-gap: 0.25rem; /* similar to gap-1 */
+  column-gap: 0.25rem;
 }
 
 .nav-link::after {
   content: "";
   position: absolute;
   left: 0;
-  bottom: -0.25rem;   /* sits just under the text */
+  bottom: -0.25rem;
   width: 0;
   height: 1px;
-  background-color: currentColor; /* follows text colour */
+  background-color: currentColor;
   transition: width 0.3s ease-out;
 }
 

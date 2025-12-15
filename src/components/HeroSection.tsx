@@ -17,7 +17,6 @@ const HeroSection = () => {
   }, []);
 
   return (
-    // ⬇️ CHANGED: Removed 'justify-center', added 'pt-32' (moves content up) and 'pb-20'
     <section 
       id="hero" 
       className="relative min-h-screen flex flex-col pt-32 pb-20 px-6 md:px-0 mb-24 overflow-hidden"
@@ -37,10 +36,13 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
-            className="font-mono text-sm text-neutral-500 mb-8 flex items-center gap-2"
+            className="font-mono text-sm mb-8 flex items-center gap-2
+                       /* Safe Mid-Grey for both modes */
+                       text-neutral-500"
           >
             <span className="text-accent">root@mitch-system:~$</span>
-            <span className="typing-cursor">./init_portfolio.sh</span>
+            {/* ⬇️ FIXED: Uses variable to guarantee Black in Light Mode */}
+            <span className="typing-cursor text-[var(--foreground)]">./init_portfolio.sh</span>
           </motion.div>
 
           {/* 3. THE INTRO */}
@@ -48,7 +50,9 @@ const HeroSection = () => {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-neutral-400 font-mono mb-4 text-base tracking-wide"
+            className="font-mono mb-4 text-base tracking-wide
+                       /* Light: Dark Grey | Dark: Light Grey */
+                       text-neutral-600 dark:text-neutral-400"
           >
             // Hi, my name is
           </motion.p>
@@ -58,10 +62,17 @@ const HeroSection = () => {
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.3, ease: "easeOut" }}
-            className="text-5xl sm:text-7xl md:text-8xl font-bold text-white tracking-tighter mb-4"
+            className="text-5xl sm:text-7xl md:text-8xl font-bold tracking-tighter mb-4
+                       /* ⬇️ FIXED: Forces correct contrast based on background */
+                       text-[var(--foreground)]"
           >
             Mitchel Affandi<span className="text-accent">.</span>
-            <span className="block text-lg sm:text-xl font-normal font-mono text-neutral-600 mt-2 tracking-widest opacity-70">
+            
+            {/* SUBTLETIES (Japanese Name) */}
+            <span className="block text-lg sm:text-xl font-normal font-mono mt-2 tracking-widest opacity-70
+                             /* Light: Mid Grey (Visible) | Dark: Mid Grey (Subtle) */
+                             text-neutral-500 dark:text-neutral-600"
+            >
               ( ミッチェル・アファンディ )
             </span>
           </motion.h1>
@@ -71,10 +82,11 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.5 }}
-            className="text-3xl sm:text-5xl font-bold text-neutral-400 mb-8"
+            className="text-3xl sm:text-5xl font-bold mb-8
+                       /* Light: Dark Grey | Dark: Light Grey */
+                       text-neutral-600 dark:text-neutral-400"
           >
-            {/* ⬇️ CHANGED: More general wording */}
-            Architecting <span className="text-white">Scalable Solutions</span>.
+            Architecting <span className="text-[var(--foreground)]">Scalable Solutions</span>.
           </motion.h2>
 
           {/* 6. THE BIO */}
@@ -82,11 +94,13 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.7 }}
-            className="max-w-xl text-neutral-400 leading-relaxed text-lg mb-10"
+            className="max-w-xl leading-relaxed text-lg mb-10
+                       /* Light: Dark Grey | Dark: Light Grey */
+                       text-neutral-600 dark:text-neutral-400"
           >
             <p>
-              I am a <span className="text-white">Backend & Cloud Engineer</span> focused on high-performance infrastructure. 
-              Currently decoding the gap between hardware and software at <span className="text-white">Telkom University</span>.
+              I am a <span className="text-[var(--foreground)] font-medium">Backend & Cloud Engineer</span> focused on high-performance infrastructure. 
+              Currently decoding the gap between hardware and software at <span className="text-[var(--foreground)] font-medium">Telkom University</span>.
             </p>
           </motion.div>
 
@@ -95,7 +109,11 @@ const HeroSection = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.9 }}
-            className="flex flex-wrap gap-6 font-mono text-xs sm:text-sm text-neutral-500 border-t border-neutral-800 pt-6 mt-12"
+            className="flex flex-wrap gap-6 font-mono text-xs sm:text-sm border-t pt-6 mt-12
+                       /* Light: Mid-Grey Text, Light Border */
+                       text-neutral-500 border-neutral-200 
+                       /* Dark: Mid-Grey Text, Dark Border */
+                       dark:text-neutral-500 dark:border-neutral-800"
           >
             <div className="flex items-center gap-2">
               <FiCpu className="text-accent" />

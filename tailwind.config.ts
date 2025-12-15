@@ -1,7 +1,9 @@
-// frontend/tailwind.config.ts
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  // ✅ CRITICAL: Force class strategy
+  darkMode: "class",
+
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -14,11 +16,17 @@ const config: Config = {
         mono: ['var(--font-space-mono)'],
       },
       colors: {
-        'white': '#ffffff',
-        'black': '#111111',
-        'light-gray': '#f3f4f6',
-        'mid-gray': '#6b7280',
-      }
+        // Links to globals.css
+        background: "var(--background)",
+        foreground: "var(--foreground)",
+
+        // ⬇️ ADD THESE TWO LINES SO THE HEADER FIX WORKS
+        "header-bg": "var(--header-bg)",
+        "header-border": "var(--header-border)",
+        
+        // Define your accent
+        accent: "#737373", 
+      },
     },
   },
   plugins: [],

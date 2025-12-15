@@ -75,16 +75,19 @@ export default function ExperienceSection({ projects }: Props) {
     <section id="experience" className="mt-32 w-full overflow-hidden relative">
       
       {/* 1. HEADER: TECHNICAL & MONOCHROME */}
-      <div className="max-w-4xl mx-auto px-6 md:px-0 mb-12 flex items-end gap-4 border-b border-neutral-800 pb-4">
+      {/* ⬇️ UPDATED: Border Color */}
+      <div className="max-w-4xl mx-auto px-6 md:px-0 mb-12 flex items-end gap-4 border-b border-neutral-200 dark:border-neutral-800 pb-4">
         <ScrollReveal
           as="h2"
           baseOpacity={0}
           enableBlur
           baseRotation={0}
           blurStrength={10}
-          containerClassName="text-3xl md:text-4xl font-bold text-white tracking-tight"
+          // ⬇️ UPDATED: Text Color
+          containerClassName="text-3xl md:text-4xl font-bold text-neutral-900 dark:text-white tracking-tight"
         >
-          // 02. Experience
+          {/* Escape the slash */}
+          {'//'} 02. Experience
         </ScrollReveal>
         <ScrollFade delay={0.2}>
            <span className="font-mono text-xs text-neutral-500 mb-1 tracking-widest hidden sm:inline-block">
@@ -94,7 +97,7 @@ export default function ExperienceSection({ projects }: Props) {
       </div>
 
       {items.length === 0 ? (
-        <p className="text-neutral-500 font-mono max-w-4xl mx-auto px-6 border-l-2 border-neutral-800 pl-4">
+        <p className="text-neutral-500 font-mono max-w-4xl mx-auto px-6 border-l-2 border-neutral-200 dark:border-neutral-800 pl-4">
           [!] ERR_NO_DATA_FOUND
         </p>
       ) : (
@@ -102,9 +105,9 @@ export default function ExperienceSection({ projects }: Props) {
         <div className="relative">
           
           {/* DECORATIVE: Stream Status Indicators */}
-          <div className="max-w-4xl mx-auto px-6 md:px-0 flex justify-between items-center text-[10px] font-mono text-neutral-600 mb-2">
+          <div className="max-w-4xl mx-auto px-6 md:px-0 flex justify-between items-center text-[10px] font-mono text-neutral-500 dark:text-neutral-600 mb-2">
             <div className="flex items-center gap-2">
-              <FiDatabase /> DATA_STREAM: <span className="text-green-500 animate-pulse">ACTIVE</span>
+              <FiDatabase /> DATA_STREAM: <span className="text-green-600 dark:text-green-500 animate-pulse">ACTIVE</span>
             </div>
             <div className="flex items-center gap-2">
               <FiActivity /> SYNC_RATE: AUTO
@@ -113,11 +116,12 @@ export default function ExperienceSection({ projects }: Props) {
 
           <div 
             ref={containerRef}
-            className="relative w-full py-8 cursor-grab active:cursor-grabbing border-y border-neutral-900 bg-neutral-950/30"
+            // ⬇️ UPDATED: Background & Borders
+            className="relative w-full py-8 cursor-grab active:cursor-grabbing border-y border-neutral-200 dark:border-neutral-900 bg-neutral-100/50 dark:bg-neutral-950/30"
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
           >
-            {/* Faded Edges (Darker gradient for monochrome feel) */}
+            {/* Faded Edges (Uses var(--background) to auto-switch white/black) */}
             <div className="absolute top-0 left-0 w-16 md:w-32 h-full bg-gradient-to-r from-[var(--background)] to-transparent z-10 pointer-events-none" />
             <div className="absolute top-0 right-0 w-16 md:w-32 h-full bg-gradient-to-l from-[var(--background)] to-transparent z-10 pointer-events-none" />
 
@@ -135,9 +139,10 @@ export default function ExperienceSection({ projects }: Props) {
           </div>
           
           {/* DECORATIVE: Bottom Ruler */}
-          <div className="max-w-4xl mx-auto mt-2 h-px bg-neutral-900 flex justify-between">
+          {/* ⬇️ UPDATED: Ruler Colors */}
+          <div className="max-w-4xl mx-auto mt-2 h-px bg-neutral-200 dark:bg-neutral-900 flex justify-between">
             {[...Array(20)].map((_, i) => (
-              <div key={i} className="w-px h-1 bg-neutral-800" />
+              <div key={i} className="w-px h-1 bg-neutral-300 dark:bg-neutral-800" />
             ))}
           </div>
 
