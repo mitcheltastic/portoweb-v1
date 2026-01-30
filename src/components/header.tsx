@@ -135,21 +135,16 @@ const Header = () => {
                               dark:border-neutral-600 dark:bg-neutral-800 
                               z-[-1] transition duration-300 ease-in-out" 
               />
-              
               {/* Main Button Layer */}
               <a
                 href="/resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                // ⬇️ FIXED: Using CSS Variables for guaranteed theme switching
                 className="relative inline-flex items-center gap-2 font-mono text-xs px-4 py-2 rounded border transition-all duration-300 ease-in-out
-                           
                            bg-[var(--btn-bg)] text-[var(--btn-text)] border-[var(--btn-border)]
-                           
                            hover:bg-[var(--btn-hover-bg)] 
                            hover:text-[var(--btn-hover-text)] 
                            hover:border-[var(--btn-hover-border)]
-
                            group-hover:-translate-x-1 group-hover:-translate-y-1"
               >
                 <span>RESUME.pdf</span>
@@ -173,71 +168,77 @@ const Header = () => {
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="fixed inset-0 z-40 bg-background/95 backdrop-blur-xl md:hidden flex flex-col items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            // ⬇️ FIXED: h-[100dvh] fixes mobile browser bar issues
+            className="fixed inset-0 z-40 bg-background/95 backdrop-blur-xl md:hidden flex flex-col"
           >
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+            {/* Subtle Grid Background */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none opacity-50" />
 
-            <nav className="relative z-10 flex flex-col items-center gap-8 w-full px-8">
-              {NAV_ITEMS.map((item, index) => (
-                <motion.div
-                  key={item.name}
+            {/* Content Container - Vertically Distributed */}
+            <div className="relative z-10 flex flex-col h-full px-8 pt-24 pb-12 overflow-y-auto">
+              
+              {/* Navigation Links */}
+              <nav className="flex-1 flex flex-col justify-center space-y-6">
+                {NAV_ITEMS.map((item, index) => (
+                  <motion.div
+                    key={item.name}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <Link
+                      href={item.href}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      // ⬇️ FIXED: Cleaner look without heavy borders
+                      className="group flex items-baseline gap-4 text-3xl font-bold tracking-tight text-neutral-400 transition-colors hover:text-[var(--foreground)]"
+                    >
+                      <span className="text-sm font-mono text-accent font-normal">// {item.num}</span>
+                      <span className="group-hover:translate-x-2 transition-transform duration-300">
+                        {item.name}
+                      </span>
+                    </Link>
+                  </motion.div>
+                ))}
+              </nav>
+
+              {/* Bottom Actions */}
+              <div className="mt-auto space-y-8">
+                {/* Theme Toggle */}
+                <motion.div 
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className="w-full text-center"
+                  transition={{ delay: 0.4 }}
+                  className="flex justify-start"
                 >
-                  <Link
-                    href={item.href}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="block font-mono text-2xl py-2 border-b border-neutral-200 dark:border-neutral-800 w-full transition-colors
-                               text-neutral-500 
-                               hover:text-[var(--foreground)]"
-                  >
-                    <span className="text-accent text-sm mr-4 block mb-1">// {item.num}</span>
-                    {item.name}
-                  </Link>
+                  <ThemeToggle />
                 </motion.div>
-              ))}
 
-              <motion.div 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                className="mt-4"
-              >
-                <ThemeToggle />
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                className="mt-8"
-              >
-                {/* Mobile Button - Matching Variables */}
-                <a
-                  href="/resume.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-3 px-8 py-4 
-                             font-bold font-mono rounded-full border
-                             transition-all duration-300
-                             
-                             bg-[var(--btn-bg)] text-[var(--btn-text)] border-[var(--btn-border)]
-                             
-                             hover:bg-[var(--btn-hover-bg)] 
-                             hover:text-[var(--btn-hover-text)] 
-                             hover:border-[var(--btn-hover-border)]"
+                {/* Resume Button */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.5 }}
                 >
-                  <FiDownload />
-                  DOWNLOAD RESUME
-                </a>
-              </motion.div>
-            </nav>
+                  <a
+                    href="/resume.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center gap-3 w-full max-w-xs py-4 
+                               font-bold font-mono rounded-full border shadow-lg
+                               transition-all duration-300 active:scale-95
+                               
+                               bg-[var(--btn-bg)] text-[var(--btn-text)] border-[var(--btn-border)]"
+                  >
+                    <FiDownload />
+                    DOWNLOAD RESUME
+                  </a>
+                </motion.div>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
