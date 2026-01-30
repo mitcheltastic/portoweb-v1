@@ -19,14 +19,14 @@ const ROW_1 = [
   { name: "Docker", icon: SiDocker, color: "#2496ED" },
   { name: "PostgreSQL", icon: SiPostgresql, color: "#4169E1" },
   { name: "Node.js", icon: SiNodedotjs, color: "#339933" },
-  { name: "Linux", icon: SiLinux, color: "#000000" }, // Black in Light Mode
+  { name: "Linux", icon: SiLinux, color: "#000000" }, 
   { name: "Nginx", icon: SiNginx, color: "#009639" },
   { name: "MySQL", icon: SiMysql, color: "#4479A1" },
 ];
 
 const ROW_2 = [
   { name: "TypeScript", icon: SiTypescript, color: "#3178C6" },
-  { name: "Next.js", icon: SiNextdotjs, color: "#000000" }, // Black in Light Mode
+  { name: "Next.js", icon: SiNextdotjs, color: "#000000" }, 
   { name: "React", icon: SiReact, color: "#61DAFB" },
   { name: "Tailwind", icon: SiTailwindcss, color: "#06B6D4" },
   { name: "Framer Motion", icon: SiFramer, color: "#0055FF" },
@@ -92,22 +92,14 @@ export default function TechStackSection() {
                      dark:hover:border-white dark:hover:text-white dark:hover:bg-neutral-800 
                      dark:hover:shadow-[0_0_15px_rgba(255,255,255,0.1)]"
         >
-          {/* ICON: 
-              - Light Mode: Uses inline style 'color' (Brand Color)
-              - Dark Mode: Uses 'currentColor' (Grey -> White on hover)
-          */}
+          {/* ICON LOGIC */}
           <div 
             className="text-lg transition-transform duration-300 group-hover:scale-110"
-            // This applies the brand color ONLY in Light Mode (via CSS variable check or simply default)
-            // But since Tailwind dark mode is class-based, we can use a CSS variable trick or simple inline style override
             style={{ color: "var(--tech-color)" } as React.CSSProperties}
           >
-             {/* TRICK: We set a local CSS variable '--tech-color' to the brand color.
-                In CSS (below), we can decide when to use it.
-             */}
              <tech.icon 
-                style={{ color: tech.color }} // 👈 Force Brand Color by default (Light Mode)
-                className="dark:!text-current" // 👈 Override with 'currentColor' in Dark Mode
+                style={{ color: tech.color }} // Default Brand Color (Light Mode)
+                className="dark:!text-current" // Override to CurrentColor (Dark Mode)
              />
           </div>
 
@@ -129,7 +121,6 @@ export default function TechStackSection() {
             enableBlur
             baseRotation={0}
             blurStrength={10}
-            // ⬇️ FIXED: Uses [var(--foreground)] for perfect contrast
             containerClassName="text-3xl md:text-4xl font-bold text-[var(--foreground)] tracking-tight"
           >
             {/* Escape slash */}
@@ -145,7 +136,6 @@ export default function TechStackSection() {
         {/* CONTEXT */}
         <ScrollFade delay={0.1}>
           <div className="flex items-center gap-2 font-mono text-[10px] text-neutral-500 dark:text-neutral-600 tracking-widest uppercase mb-8">
-            {/* ⬇️ FIXED: Status text uses foreground */}
             <FiCpu /> SYSTEM_CAPABILITIES: <span className="text-[var(--foreground)]">OPTIMIZED</span>
           </div>
         </ScrollFade>
@@ -154,9 +144,7 @@ export default function TechStackSection() {
       {/* MARQUEE ROWS */}
       <div ref={containerRef} className="flex flex-col gap-6 relative z-10">
         
-        {/* Faded Edges (Relies on var(--background) to switch correctly) */}
-        <div className="absolute top-0 left-0 w-24 h-full bg-gradient-to-r from-[var(--background)] to-transparent z-20 pointer-events-none" />
-        <div className="absolute top-0 right-0 w-24 h-full bg-gradient-to-l from-[var(--background)] to-transparent z-20 pointer-events-none" />
+        {/* ❌ REMOVED: Faded Edges (Blurry Rectangles) */}
 
         {/* Row 1 (Left) */}
         <div className="w-full transform -rotate-1">

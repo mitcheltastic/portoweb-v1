@@ -1,153 +1,139 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import { gsap } from "gsap";
+import React from "react";
+import Image from "next/image"; // 👈 Ensure this is imported
 import ScrollReveal from "@/components/ScrollReveal";
 import ScrollFade from "@/components/ScrollFade";
-import ProjectCard from "@/components/ProjectCard";
-import type { Project } from "@/types/project";
-import { FiActivity, FiDatabase } from "react-icons/fi";
+import { FiClock } from "react-icons/fi";
 
-type Props = { projects: Project[] };
+// ⬇️ REAL DATA: Mapped with Logo Paths
+const CAREER_DATA = [
+  {
+    id: 1,
+    role: "Backend Developer",
+    company: "PT. Ekshalasi Langit Biru",
+    type: "Contract",
+    date: "Apr 2025 - Present",
+    duration: "Present",
+    description: "Built high-performance backend services using Golang, processing 10K+ sensor data points/day. Integrated Redis caching to speed up retrieval by 55% and designed automated CI/CD pipelines with GitHub Actions, cutting deployment time by 60%.",
+    logo: "/logos/birulangit.png" // 👈 File path in public folder
+  },
+  {
+    id: 2,
+    role: "Backend Developer",
+    company: "PBI Evermos x Rakamin Academy",
+    type: "Project Based Intern",
+    date: "Jan 2025 - Feb 2025",
+    duration: "2 mos",
+    description: "Developed backend algorithms using Golang, optimizing query execution time by 35%. Optimized server performance before deployment, reducing downtime by 20%, and managed database operations using MySQL.",
+    logo: "/logos/evermos.png"
+  },
+  {
+    id: 3,
+    role: "Research Assistant & HR Head",
+    company: "Cyber Physical System Laboratory",
+    type: "Laboratory",
+    date: "Sep 2024 - Present",
+    duration: "2 yrs",
+    description: "Engineered backend algorithms with Express.js, improving API response time by 30%. Built and deployed 10+ RESTful APIs with Node.js. As Head of HR, streamlined team structure and onboarding to enhance member engagement.",
+    logo: "/logos/cps.jpg"
+  },
+  {
+    id: 4,
+    role: "President",
+    company: "International Class Student Volunteer",
+    type: "Organization",
+    date: "Feb 2025 - Jan 2026",
+    duration: "1 yr",
+    description: "Managed 50+ members, fostering a productive and inclusive work environment. Spearheaded initiatives to enhance communication and established mentorship platforms for international students.",
+    logo: "/logos/SV.png"
+  }
+];
 
-export default function ExperienceSection({ projects }: Props) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const loopRef = useRef<GSAPAnimation | null>(null);
-
-  // 🛡️ Safe filtering
-  const validProjects = projects?.filter(p => p !== undefined && p !== null) || [];
-  
-  // Clone data for infinite loop
-  const items = validProjects.length 
-    ? [...validProjects, ...validProjects, ...validProjects, ...validProjects] 
-    : [];
-
-  useEffect(() => {
-    if (!containerRef.current || items.length === 0) return;
-
-    const ctx = gsap.context(() => {
-      const track = containerRef.current?.querySelector(".marquee-track");
-      if (!track) return;
-
-      const totalWidth = track.scrollWidth;
-      const oneSetWidth = totalWidth / 4; 
-
-      gsap.set(track, { x: 0 });
-
-      loopRef.current = gsap.to(track, {
-        x: -oneSetWidth, 
-        ease: "none",
-        duration: 25, 
-        repeat: -1,
-        onRepeat: () => {
-           gsap.set(track, { x: 0 });
-        }
-      });
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, [items]);
-
-  // Interactive Hover Logic
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!loopRef.current || !containerRef.current) return;
-    const { left, width } = containerRef.current.getBoundingClientRect();
-    const mouseX = e.clientX - left;
-    const center = width / 2;
-    const rawPos = (mouseX - center) / center;
-
-    gsap.to(loopRef.current, {
-      timeScale: rawPos * 2.5,
-      duration: 0.8,
-      overwrite: "auto"
-    });
-  };
-
-  const handleMouseLeave = () => {
-    if (!loopRef.current) return;
-    gsap.to(loopRef.current, {
-      timeScale: 1, 
-      duration: 0.5
-    });
-  };
-
+export default function ExperienceSection() {
   return (
-    <section id="experience" className="mt-32 w-full overflow-hidden relative">
+    <section id="experience" className="mt-32 max-w-4xl mx-auto px-6 md:px-0 relative">
       
-      {/* 1. HEADER: TECHNICAL & MONOCHROME */}
-      <div className="max-w-4xl mx-auto px-6 md:px-0 mb-12 flex items-end gap-4 border-b border-neutral-200 dark:border-neutral-800 pb-4">
+      {/* 1. HEADER */}
+      <div className="mb-12 flex items-end gap-4 border-b border-[#E5E5E5] dark:border-[#262626] pb-4">
         <ScrollReveal
           as="h2"
           baseOpacity={0}
           enableBlur
           baseRotation={0}
           blurStrength={10}
-          // ⬇️ FIXED: Uses [var(--foreground)] to guarantee visibility in both modes
           containerClassName="text-3xl md:text-4xl font-bold text-[var(--foreground)] tracking-tight"
         >
-          {/* Escape the slash */}
-          {'//'} 02. Experience
+          {'//'} 02. Career Timeline
         </ScrollReveal>
         <ScrollFade delay={0.2}>
            <span className="font-mono text-xs text-neutral-500 mb-1 tracking-widest hidden sm:inline-block">
-            [ キャリア • LOGS ]
+            [ キャリア • HISTORY ]
           </span>
         </ScrollFade>
       </div>
 
-      {items.length === 0 ? (
-        <p className="text-neutral-500 font-mono max-w-4xl mx-auto px-6 border-l-2 border-neutral-200 dark:border-neutral-800 pl-4">
-          [!] ERR_NO_DATA_FOUND
-        </p>
-      ) : (
-        /* Marquee Container */
-        <div className="relative">
-          
-          {/* DECORATIVE: Stream Status Indicators */}
-          <div className="max-w-4xl mx-auto px-6 md:px-0 flex justify-between items-center text-[10px] font-mono text-neutral-500 dark:text-neutral-600 mb-2">
-            <div className="flex items-center gap-2">
-              <FiDatabase /> DATA_STREAM: <span className="text-green-600 dark:text-green-500 animate-pulse">ACTIVE</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <FiActivity /> SYNC_RATE: AUTO
-            </div>
-          </div>
+      {/* 2. TIMELINE LIST */}
+      <div className="flex flex-col gap-12 relative">
+        {/* Continuous vertical line for timeline effect */}
+        <div className="absolute left-[26px] top-4 bottom-4 w-px bg-neutral-200 dark:bg-neutral-800 z-0 hidden md:block" />
 
-          <div 
-            ref={containerRef}
-            // ⬇️ UPDATED: Background uses standard Tailwind utility colors for safety
-            className="relative w-full py-8 cursor-grab active:cursor-grabbing 
-                       border-y border-neutral-200 dark:border-neutral-900 
-                       bg-neutral-100 dark:bg-neutral-950/30"
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-          >
-            {/* Faded Edges (Uses var(--background) to match the main page background) */}
-            <div className="absolute top-0 left-0 w-16 md:w-32 h-full bg-gradient-to-r from-[var(--background)] to-transparent z-10 pointer-events-none" />
-            <div className="absolute top-0 right-0 w-16 md:w-32 h-full bg-gradient-to-l from-[var(--background)] to-transparent z-10 pointer-events-none" />
-
-            {/* Marquee Track */}
-            <div className="marquee-track flex gap-6 md:gap-10 w-max px-4">
-              {items.map((project, i) => (
-                <div 
-                  key={`${project.id}-${i}`} 
-                  className="w-[300px] md:w-[400px] flex-shrink-0 transition-transform duration-300 hover:scale-[1.02]"
-                >
-                  <ProjectCard project={project} />
+        {CAREER_DATA.map((item, index) => (
+          <ScrollFade key={item.id} delay={index * 0.1} fromY={20}>
+            <div className="relative z-10 flex flex-col md:flex-row gap-6 group">
+              
+              {/* LOGO COLUMN */}
+                <div className="flex-shrink-0">
+                  {/* 1. Added 'relative': Required for Next.js Image 'fill' to work.
+                      2. Removed 'flex items-center justify-center': Not needed since image fills the space.
+                      3. Kept 'overflow-hidden': Ensures the square image gets clipped to the rounded-full circle.
+                  */}
+                  <div className="relative w-14 h-14 rounded-full border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-sm group-hover:scale-110 transition-transform duration-300 z-10 overflow-hidden">
+                    
+                    <Image 
+                      src={item.logo} 
+                      alt={item.company} 
+                      fill // 👈 This makes the image expand to the full 56px (w-14) size
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                      // ⬇️ CHANGED: 'object-cover' zooms/crops the image to fill the circle completely
+                      className="object-cover opacity-90 group-hover:opacity-100 transition-opacity"
+                    />
+                    
+                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
-          
-          {/* DECORATIVE: Bottom Ruler */}
-          <div className="max-w-4xl mx-auto mt-2 h-px bg-neutral-200 dark:bg-neutral-900 flex justify-between">
-            {[...Array(20)].map((_, i) => (
-              <div key={i} className="w-px h-1 bg-neutral-300 dark:bg-neutral-800" />
-            ))}
-          </div>
+              {/* CONTENT COLUMN */}
+              <div className="flex-1 pt-1">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-2">
+                  <div>
+                    <h3 className="text-lg font-bold text-[var(--foreground)] leading-tight group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                      {item.company} <span className="text-neutral-400 mx-1">•</span> {item.role}
+                    </h3>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs font-mono text-neutral-500">
+                     <span className="px-2 py-1 rounded bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
+                        {item.type}
+                     </span>
+                  </div>
+                </div>
 
-        </div>
-      )}
+                <div className="flex items-center gap-3 text-xs text-neutral-500 font-mono mb-3">
+                  <span className="flex items-center gap-1">
+                    <FiClock /> {item.date}
+                  </span>
+                  <span>•</span>
+                  <span>{item.duration}</span>
+                </div>
+
+                <p className="text-sm leading-relaxed text-neutral-600 dark:text-neutral-400 max-w-2xl text-justify">
+                  {item.description}
+                </p>
+              </div>
+
+            </div>
+          </ScrollFade>
+        ))}
+      </div>
+
     </section>
   );
 }

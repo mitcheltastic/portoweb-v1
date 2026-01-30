@@ -4,9 +4,8 @@ import HeroSection from "@/components/HeroSection";
 import AboutSection from "@/components/AboutSection";
 import ExperienceSection from "@/components/ExperienceSection";
 import SelectedWorkSection from "@/components/SelectedWorkSection";
-import TechStackSection from "@/components/TechStackSection"; // 👈 IMPORT THIS
+import TechStackSection from "@/components/TechStackSection";
 import ContactSection from "@/components/ContactSection";
-import { PROJECTS } from "@/data/project";
 
 export const dynamic = "force-static";
 export const revalidate = false;
@@ -16,9 +15,14 @@ export default function HomePage() {
     <main className="max-w-4xl mx-auto px-6 md:px-12 pt-0 pb-24 md:pb-32">
       <HeroSection />
       <AboutSection />
-      <ExperienceSection projects={PROJECTS} />
+      
+      {/* ⬇️ FIXED: Removed 'projects' prop since it now uses internal data */}
+      <ExperienceSection />
+      
+      {/* ⬇️ Note: SelectedWorkSection imports PROJECTS internally now too */}
       <SelectedWorkSection />
-      <TechStackSection /> {/* 👈 ADD THIS HERE */}
+      
+      <TechStackSection />
       <ContactSection />
     </main>
   );

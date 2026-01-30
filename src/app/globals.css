@@ -10,15 +10,24 @@
   --header-bg: rgba(255, 255, 255, 0.85);
   --header-border: #e5e5e5;
 
-  /* ⬇️ NEW: Resume Button Variables (Light Mode) */
-  /* Default: Black Button */
+  /* Resume Button (Primary) */
   --btn-bg: #171717;
   --btn-text: #ffffff;
   --btn-border: #171717;
-  /* Hover: Invert to White */
   --btn-hover-bg: #ffffff;
   --btn-hover-text: #171717;
   --btn-hover-border: #171717;
+
+  /* ⬇️ NEW: Marquee Section Variables */
+  --marquee-bg: #F5F5F5;
+  --marquee-border: #E5E5E5;
+
+  /* ⬇️ NEW: Secondary Button (View Archive) */
+  --sec-btn-bg: #ffffff;
+  --sec-btn-text: #525252; /* neutral-600 */
+  --sec-btn-border: #d4d4d4;
+  --sec-btn-hover-bg: #000000;
+  --sec-btn-hover-text: #ffffff;
 
   /* Global Fonts */
   --font-sans: var(--font-inter);
@@ -35,15 +44,24 @@
   --header-bg: rgba(10, 10, 10, 0.9);
   --header-border: #262626;
 
-  /* ⬇️ NEW: Resume Button Variables (Dark Mode) */
-  /* Default: White Button */
+  /* Resume Button (Primary) */
   --btn-bg: #ededed;
   --btn-text: #000000;
   --btn-border: #ededed;
-  /* Hover: Invert to Black */
   --btn-hover-bg: #000000;
   --btn-hover-text: #ededed;
   --btn-hover-border: #ededed;
+
+  /* ⬇️ NEW: Marquee Section Variables */
+  --marquee-bg: #0A0A0A;
+  --marquee-border: #262626;
+
+  /* ⬇️ NEW: Secondary Button (View Archive) */
+  --sec-btn-bg: #000000;
+  --sec-btn-text: #a3a3a3; /* neutral-400 */
+  --sec-btn-border: #404040;
+  --sec-btn-hover-bg: #ffffff;
+  --sec-btn-hover-text: #000000;
 }
 
 /* ✅ GLOBAL SETTINGS */
