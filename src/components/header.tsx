@@ -102,7 +102,6 @@ const Header = () => {
                 <li key={item.name}>
                   <Link
                     href={item.href}
-                    // ⬇️ FIXED: Using [var(--foreground)] bypasses Tailwind's confused dark mode logic
                     className="group flex items-center gap-1 transition-colors duration-300
                                text-neutral-500 
                                hover:text-[var(--foreground)]"
@@ -114,7 +113,6 @@ const Header = () => {
                     <span className="relative group-hover:translate-x-1 transition-transform duration-300">
                       {item.num}. {item.name}
                       
-                      {/* ⬇️ FIXED: Underline also uses the CSS variable directly */}
                       <span className="absolute left-0 -bottom-1 w-0 h-[1px] 
                                      bg-[var(--foreground)]
                                      transition-all duration-300 ease-in-out
@@ -137,25 +135,21 @@ const Header = () => {
                               dark:border-neutral-600 dark:bg-neutral-800 
                               z-[-1] transition duration-300 ease-in-out" 
               />
+              
               {/* Main Button Layer */}
               <a
                 href="/resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="relative inline-flex items-center gap-2 font-mono text-xs px-4 py-2 rounded
-                           border transition-all duration-300 ease-in-out
+                // ⬇️ FIXED: Using CSS Variables for guaranteed theme switching
+                className="relative inline-flex items-center gap-2 font-mono text-xs px-4 py-2 rounded border transition-all duration-300 ease-in-out
                            
-                           /* LIGHT MODE: White Button, Dark Text */
-                           bg-white text-neutral-900 border-neutral-300
-                           /* LIGHT HOVER: Black Button, White Text */
-                           group-hover:bg-neutral-900 group-hover:text-white group-hover:border-neutral-900
+                           bg-[var(--btn-bg)] text-[var(--btn-text)] border-[var(--btn-border)]
                            
-                           /* DARK MODE: Black Button, Light Text */
-                           dark:bg-black dark:text-neutral-200 dark:border-neutral-700
-                           /* DARK HOVER: White Button, Black Text */
-                           dark:group-hover:bg-white dark:group-hover:text-black dark:group-hover:border-white
-                           
-                           /* MOVEMENT ANIMATION */
+                           hover:bg-[var(--btn-hover-bg)] 
+                           hover:text-[var(--btn-hover-text)] 
+                           hover:border-[var(--btn-hover-border)]
+
                            group-hover:-translate-x-1 group-hover:-translate-y-1"
               >
                 <span>RESUME.pdf</span>
@@ -166,7 +160,6 @@ const Header = () => {
 
           {/* --- MOBILE HAMBURGER BUTTON --- */}
           <button 
-            // ⬇️ FIXED: Uses variable to ensure visibility
             className="md:hidden text-[var(--foreground)] text-2xl z-50 p-2 focus:outline-none"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             aria-label="Toggle menu"
@@ -200,7 +193,6 @@ const Header = () => {
                   <Link
                     href={item.href}
                     onClick={() => setIsMobileMenuOpen(false)}
-                    // ⬇️ FIXED: Mobile also uses variable
                     className="block font-mono text-2xl py-2 border-b border-neutral-200 dark:border-neutral-800 w-full transition-colors
                                text-neutral-500 
                                hover:text-[var(--foreground)]"
@@ -226,7 +218,7 @@ const Header = () => {
                 transition={{ delay: 0.5 }}
                 className="mt-8"
               >
-                {/* Mobile Button */}
+                {/* Mobile Button - Matching Variables */}
                 <a
                   href="/resume.pdf"
                   target="_blank"
@@ -235,13 +227,11 @@ const Header = () => {
                              font-bold font-mono rounded-full border
                              transition-all duration-300
                              
-                             /* Light: Black Bg -> White Bg */
-                             bg-neutral-900 text-white border-neutral-900
-                             hover:bg-white hover:text-black hover:border-black
-
-                             /* Dark: White Bg -> Black Bg */
-                             dark:bg-white dark:text-black dark:border-white
-                             dark:hover:bg-black dark:hover:text-white dark:hover:border-white"
+                             bg-[var(--btn-bg)] text-[var(--btn-text)] border-[var(--btn-border)]
+                             
+                             hover:bg-[var(--btn-hover-bg)] 
+                             hover:text-[var(--btn-hover-text)] 
+                             hover:border-[var(--btn-hover-border)]"
                 >
                   <FiDownload />
                   DOWNLOAD RESUME

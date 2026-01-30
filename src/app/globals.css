@@ -5,11 +5,20 @@
      LIGHT MODE (Default)
      ========================================= */
   --background: #ffffff;
-  --foreground: #171717; /* Rich Black text for visibility */
+  --foreground: #171717;
   
-  /* ⬇️ NEW: Explicit Header Variables to fix the dark header bug */
-  --header-bg: rgba(255, 255, 255, 0.85); /* White glassmorphism */
-  --header-border: #e5e5e5;               /* Light gray border */
+  --header-bg: rgba(255, 255, 255, 0.85);
+  --header-border: #e5e5e5;
+
+  /* ⬇️ NEW: Resume Button Variables (Light Mode) */
+  /* Default: Black Button */
+  --btn-bg: #171717;
+  --btn-text: #ffffff;
+  --btn-border: #171717;
+  /* Hover: Invert to White */
+  --btn-hover-bg: #ffffff;
+  --btn-hover-text: #171717;
+  --btn-hover-border: #171717;
 
   /* Global Fonts */
   --font-sans: var(--font-inter);
@@ -18,14 +27,23 @@
 
 .dark {
   /* =========================================
-     DARK MODE (Applied when .dark class exists)
+     DARK MODE
      ========================================= */
-  --background: #000000; /* Pure black */
-  --foreground: #ededed; /* White text */
+  --background: #000000;
+  --foreground: #ededed;
 
-  /* ⬇️ NEW: Dark Mode Header Variables */
-  --header-bg: rgba(10, 10, 10, 0.9);     /* Dark glassmorphism */
-  --header-border: #262626;               /* Dark border */
+  --header-bg: rgba(10, 10, 10, 0.9);
+  --header-border: #262626;
+
+  /* ⬇️ NEW: Resume Button Variables (Dark Mode) */
+  /* Default: White Button */
+  --btn-bg: #ededed;
+  --btn-text: #000000;
+  --btn-border: #ededed;
+  /* Hover: Invert to Black */
+  --btn-hover-bg: #000000;
+  --btn-hover-text: #ededed;
+  --btn-hover-border: #ededed;
 }
 
 /* ✅ GLOBAL SETTINGS */
@@ -35,12 +53,8 @@ html {
 
 body {
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
-  
-  /* Apply the variables */
   background: var(--background);
   color: var(--foreground);
-
-  /* ⬇️ SMOOTH THEME TRANSITION */
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
