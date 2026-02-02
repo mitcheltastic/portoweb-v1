@@ -137,7 +137,7 @@ const Header = () => {
               />
               {/* Main Button Layer */}
               <a
-                href="/resume.pdf"
+                href="/mitchel-resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="relative inline-flex items-center gap-2 font-mono text-xs px-4 py-2 rounded border transition-all duration-300 ease-in-out
@@ -224,7 +224,7 @@ const Header = () => {
                   transition={{ delay: 0.5 }}
                 >
                   <a
-                    href="/resume.pdf"
+                    href="/mitchel-resume.pdf"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex items-center justify-center gap-3 w-full max-w-xs py-4 
