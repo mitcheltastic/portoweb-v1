@@ -18,10 +18,8 @@ export default function ProjectCard({ project }: Props) {
 
   return (
     <article className="group relative flex flex-col h-[420px] overflow-hidden rounded-xl transition-all duration-300 
-      /* ⬇️ UPDATED: Base Colors */
       bg-white dark:bg-neutral-900/50 
       border border-neutral-200 dark:border-neutral-800 
-      /* ⬇️ UPDATED: Hover Effects */
       hover:shadow-xl hover:border-neutral-300 dark:hover:border-white/40 dark:hover:shadow-[0_0_20px_rgba(255,255,255,0.05)]"
     >
       
@@ -31,17 +29,15 @@ export default function ProjectCard({ project }: Props) {
           <img
             src={project.image}
             alt={project.name || "Project Image"}
-            className="w-full h-full object-cover grayscale opacity-80 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-105"
+            className="w-full h-full object-cover grayscale opacity-80 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-105 pointer-events-none"
           />
         ) : (
-          /* Placeholder: Pure monochrome gradient */
-          /* ⬇️ UPDATED: Gradient for both modes */
-          <div className="w-full h-full bg-gradient-to-br from-neutral-200 to-neutral-300 dark:from-neutral-800 dark:to-neutral-950 flex items-center justify-center group-hover:scale-105 transition-transform duration-500">
+          /* Placeholder */
+          <div className="w-full h-full bg-gradient-to-br from-neutral-200 to-neutral-300 dark:from-neutral-800 dark:to-neutral-950 flex items-center justify-center group-hover:scale-105 transition-transform duration-500 pointer-events-none">
             <FiFolder className="text-4xl text-neutral-400 dark:text-neutral-600 group-hover:text-neutral-900 dark:group-hover:text-white transition-colors duration-300" />
           </div>
         )}
         
-        {/* Overlay for text contrast (Only needed in dark mode really, or subtle in light) */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent dark:from-neutral-900 dark:to-transparent opacity-80 pointer-events-none" />
       </div>
 
@@ -63,13 +59,16 @@ export default function ProjectCard({ project }: Props) {
           </div>
           
           {/* Action Icons */}
-          <div className="flex gap-4 text-neutral-400 dark:text-neutral-500">
+          <div className="flex gap-4 text-neutral-400 dark:text-neutral-500 relative z-30">
             {project.repo_url && (
               <a 
                 href={project.repo_url} 
                 target="_blank" 
                 rel="noreferrer" 
-                className="hover:text-neutral-900 dark:hover:text-white transition-colors z-20"
+                // ⬇️ FIXED: Stop event propagation so the click works inside the draggable area
+                onClick={(e) => e.stopPropagation()}
+                onPointerDown={(e) => e.stopPropagation()} 
+                className="hover:text-neutral-900 dark:hover:text-white transition-colors p-1"
                 aria-label="GitHub Repo"
               >
                 <FiGithub size={20} />
@@ -80,7 +79,10 @@ export default function ProjectCard({ project }: Props) {
                 href={project.live_url} 
                 target="_blank" 
                 rel="noreferrer" 
-                className="hover:text-neutral-900 dark:hover:text-white transition-colors z-20"
+                // ⬇️ FIXED: Stop event propagation
+                onClick={(e) => e.stopPropagation()}
+                onPointerDown={(e) => e.stopPropagation()}
+                className="hover:text-neutral-900 dark:hover:text-white transition-colors p-1"
                 aria-label="Live Demo"
               >
                 <FiExternalLink size={20} />
@@ -94,7 +96,7 @@ export default function ProjectCard({ project }: Props) {
           {project.description}
         </p>
 
-        {/* Footer: Tech Stack Pills (Monochrome) */}
+        {/* Footer: Tech Stack Pills */}
         <div className="mt-auto">
           {project.tech && project.tech.length > 0 && (
             <ul className="flex flex-wrap gap-2 text-xs font-mono text-neutral-500 dark:text-neutral-400">
