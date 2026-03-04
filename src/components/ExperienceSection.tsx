@@ -6,20 +6,39 @@ import ScrollReveal from "@/components/ScrollReveal";
 import ScrollFade from "@/components/ScrollFade";
 import { FiClock } from "react-icons/fi";
 
-// ⬇️ REAL DATA: Mapped with Logo Paths
 const CAREER_DATA = [
   {
     id: 1,
+    role: "International Research Intern",
+    company: "Sri Eshwar College of Engineering",
+    type: "Internship",
+    date: "Jul 2025 - Aug 2025",
+    duration: "2 mos",
+    description: "Participated in an intensive international research program focused on AI applications in business innovation. Engaged in collaborative machine learning sessions and executed interdisciplinary projects demonstrating industrial transformation in finance and operations.",
+    logo: "/logos/sri-eshwar.png"
+  },
+  {
+    id: 2,
     role: "Backend Developer",
     company: "PT. Ekshalasi Langit Biru",
     type: "Contract",
     date: "Apr 2025 - Present",
     duration: "Present",
     description: "Built high-performance backend services using Golang, processing 10K+ sensor data points/day. Integrated Redis caching to speed up retrieval by 55% and designed automated CI/CD pipelines with GitHub Actions, cutting deployment time by 60%.",
-    logo: "/logos/birulangit.png" // 👈 File path in public folder
+    logo: "/logos/birulangit.png"
   },
   {
-    id: 2,
+    id: 3,
+    role: "President",
+    company: "International Class Student Volunteer",
+    type: "Organization",
+    date: "Feb 2025 - Jan 2026",
+    duration: "1 yr",
+    description: "Managed 50+ members, fostering a productive and inclusive work environment. Spearheaded initiatives to enhance communication and established mentorship platforms for international students.",
+    logo: "/logos/SV.png"
+  },
+  {
+    id: 4,
     role: "Backend Developer",
     company: "PBI Evermos x Rakamin Academy",
     type: "Project Based Intern",
@@ -29,7 +48,7 @@ const CAREER_DATA = [
     logo: "/logos/evermos.png"
   },
   {
-    id: 3,
+    id: 5,
     role: "Research Assistant & HR Head",
     company: "Cyber Physical System Laboratory",
     type: "Laboratory",
@@ -37,16 +56,6 @@ const CAREER_DATA = [
     duration: "2 yrs",
     description: "Engineered backend algorithms with Express.js, improving API response time by 30%. Built and deployed 10+ RESTful APIs with Node.js. As Head of HR, streamlined team structure and onboarding to enhance member engagement.",
     logo: "/logos/cps.jpg"
-  },
-  {
-    id: 4,
-    role: "President",
-    company: "International Class Student Volunteer",
-    type: "Organization",
-    date: "Feb 2025 - Jan 2026",
-    duration: "1 yr",
-    description: "Managed 50+ members, fostering a productive and inclusive work environment. Spearheaded initiatives to enhance communication and established mentorship platforms for international students.",
-    logo: "/logos/SV.png"
   }
 ];
 
