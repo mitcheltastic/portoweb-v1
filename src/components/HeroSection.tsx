@@ -99,7 +99,7 @@ const HeroSection = () => {
                        text-neutral-600 dark:text-neutral-400"
           >
             <p>
-              I am a <span className="text-[var(--foreground)] font-medium">Backend & Cloud Engineer</span> focused on high-performance infrastructure. 
+              I am a <span className="text-[var(--foreground)] font-medium">Fullstack & Cloud Engineer</span> focused on high-performance infrastructure. 
               Currently decoding the gap between hardware and software at <span className="text-[var(--foreground)] font-medium">Telkom University</span>.
             </p>
           </motion.div>

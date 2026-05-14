@@ -1,5 +1,14 @@
 @import "tailwindcss";
 
+@theme {
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-space-mono);
+  
+  --color-accent: #737373;
+  --color-header-bg: var(--header-bg);
+  --color-header-border: var(--header-border);
+}
+
 :root {
   /* =========================================
      LIGHT MODE (Default)

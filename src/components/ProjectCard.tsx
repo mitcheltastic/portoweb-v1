@@ -3,6 +3,7 @@
 import React from "react";
 import { FiGithub, FiExternalLink, FiFolder } from "react-icons/fi";
 import { Project } from "@/types/project";
+import Image from "next/image";
 
 type ExtendedProject = Project & {
   image?: string;
@@ -26,10 +27,12 @@ export default function ProjectCard({ project }: Props) {
       {/* 1. TOP IMAGE / PLACEHOLDER AREA */}
       <div className="h-48 w-full overflow-hidden relative bg-neutral-100 dark:bg-neutral-950 flex-shrink-0">
         {project.image ? (
-          <img
+          <Image
             src={project.image}
             alt={project.name || "Project Image"}
-            className="w-full h-full object-cover grayscale opacity-80 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-105 pointer-events-none"
+            fill
+            sizes="(max-width: 768px) 100vw, 400px"
+            className="object-cover grayscale opacity-80 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500 transform group-hover:scale-105 pointer-events-none"
           />
         ) : (
           /* Placeholder */

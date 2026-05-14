@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import clsx from 'clsx';
+import Image from "next/image";
 
 const TIMINGS = {
   START_DELAY: 1800,
@@ -118,9 +119,12 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ isLoading }) => {
       >
         
         {/* LOGO IMAGE */}
-        <img
+        <Image
           src="/MitchLogo.png"
           alt="Logo"
+          width={192}
+          height={192}
+          priority
           className={clsx(
             "z-30 rounded-full filter invert absolute transition-all duration-[1200ms] cubic-bezier(0.22, 1, 0.36, 1)",
             "w-32 h-32 md:w-48 md:h-48 shadow-2xl",

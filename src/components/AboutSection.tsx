@@ -3,6 +3,8 @@
 import ScrollReveal from "@/components/ScrollReveal";
 import ScrollFade from "@/components/ScrollFade";
 import { FiCpu, FiZap } from "react-icons/fi";
+import Image from "next/image";
+import ProfileCarousel from "@/components/ProfileCarousel";
 
 export default function AboutSection() {
   return (
@@ -98,46 +100,7 @@ export default function AboutSection() {
             <FiCpu size={48} className="opacity-20" />
           </div>
           
-          <div className="relative w-full aspect-[4/5] md:aspect-auto md:h-[350px]">
-            
-            {/* BACKGROUND CARD (The Dimmer Version) */}
-            <div
-              className="absolute inset-0 w-full h-full rounded-md z-0 overflow-hidden
-                         origin-bottom transform transition-all duration-500 ease-out
-                         group-hover:rotate-6 group-hover:translate-x-4 
-                         border border-neutral-200 dark:border-neutral-800/50"
-            >
-              <img
-                src="/MitchAboutMe.jpg"
-                alt=""
-                className="w-full h-full object-cover filter grayscale opacity-20 dark:opacity-40 brightness-110 dark:brightness-50"
-              />
-            </div>
-
-            {/* FOREGROUND CARD (The Main Version) */}
-            <div
-              className="relative z-10 w-full h-full rounded-md overflow-hidden 
-                         border border-neutral-200 dark:border-neutral-700 
-                         bg-white dark:bg-neutral-900 shadow-2xl
-                         origin-bottom transform transition-all duration-500 ease-out
-                         group-hover:-rotate-3 group-hover:-translate-x-2"
-            >
-              <div className="absolute inset-0 bg-neutral-900/0 z-10 group-hover:bg-transparent transition-colors duration-300" />
-              <img
-                src="/MitchAboutMe.jpg"
-                alt="Mitch Affandi"
-                className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-500"
-              />
-              
-              {/* Tech Overlay on Image */}
-              <div className="absolute top-2 left-2 z-20">
-                <div className="w-2 h-2 bg-white rounded-full animate-pulse" />
-              </div>
-              <div className="absolute bottom-4 right-4 z-20 font-mono text-[10px] text-white/90 tracking-widest bg-black/50 px-2 py-1 backdrop-blur-sm rounded">
-                ID: MITCH-001
-              </div>
-            </div>
-          </div>
+          <ProfileCarousel />
 
           {/* Vertical Japanese Text Decoration */}
           <div className="absolute -left-8 bottom-0 font-mono text-[10px] text-neutral-400 dark:text-neutral-700 writing-vertical-rl hidden md:block tracking-widest">

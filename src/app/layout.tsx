@@ -9,6 +9,7 @@ import PageWrapper from "@/components/PageWrapper";
 import Footer from "@/components/footer";
 // ⬇️ 1. Import the ThemeProvider
 import { ThemeProvider } from "@/components/ThemeProvider";
+import Jukebox from "@/components/Jukebox";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -53,6 +54,7 @@ export default function RootLayout({
             <RightSidebar />
             {children}
             <Footer />
+            <Jukebox />
           </PageWrapper>
         </ThemeProvider>
       </body>
