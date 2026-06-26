@@ -34,6 +34,13 @@ const Header = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY, isMobileMenuOpen]);
 
+  // Dispatch custom event for Jukebox and other components to react to mobile menu toggling
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("mobileMenuOpen", { detail: isMobileMenuOpen }));
+    }
+  }, [isMobileMenuOpen]);
+
   // 3. Navigation Items Data
   const NAV_ITEMS = [
     { num: "01", name: "About", href: "#about" },

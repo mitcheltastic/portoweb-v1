@@ -32,6 +32,102 @@ export default function Jukebox() {
   const [volume, setVolume] = useState(0.5); // Default 50%
   const [isMuted, setIsMuted] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  
+  // Custom states and refs for responsiveness & behavior
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [hasHover, setHasHover] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  
+  const jukeboxRef = useRef<HTMLDivElement | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Sync mobile menu open state from Header component
+  useEffect(() => {
+    const handleMenuToggle = (e: Event) => {
+      const customEvent = e as CustomEvent<boolean>;
+      setIsMobileMenuOpen(customEvent.detail);
+      if (customEvent.detail) {
+        setIsOpen(false); // Close jukebox panel if mobile menu is opened
+      }
+    };
+    
+    if (typeof window !== "undefined") {
+      window.addEventListener("mobileMenuOpen", handleMenuToggle);
+    }
+    return () => {
+      if (typeof window !== "undefined") {
+        window.removeEventListener("mobileMenuOpen", handleMenuToggle);
+      }
+    };
+  }, []);
+
+  // Detect device hover capability to avoid hover issues on touch screens
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setHasHover(window.matchMedia("(hover: hover)").matches);
+    }
+  }, []);
+
+  // Click / touch outside to close the music player panel (crucial for mobile UX)
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent | TouchEvent) => {
+      const target = event.target as Node;
+      // If the target element has been unmounted from the DOM (e.g., swapping icons),
+      // it will no longer be a descendant of jukeboxRef. We should ignore it to prevent
+      // closing the panel accidentally.
+      if (target && !document.body.contains(target)) {
+        return;
+      }
+      if (jukeboxRef.current && !jukeboxRef.current.contains(target)) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("touchstart", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("touchstart", handleClickOutside);
+    };
+  }, []);
+
+  // Reset inactivity fade-out timer on user interactions
+  const resetTimer = () => {
+    setIsVisible(true);
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    // Only auto-fade when closed. If open, keep it visible.
+    if (!isOpen) {
+      timeoutRef.current = setTimeout(() => {
+        setIsVisible(false);
+      }, 5000);
+    }
+  };
+
+  // Listen to user scroll, swipe (touchmove), click, keydown, and mousemove events to reset inactivity timer
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const events = ["scroll", "touchmove", "mousemove", "keydown", "click"];
+    const handleActivity = () => {
+      resetTimer();
+    };
+
+    resetTimer();
+
+    events.forEach((event) => {
+      window.addEventListener(event, handleActivity, { passive: true });
+    });
+
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      events.forEach((event) => {
+        window.removeEventListener(event, handleActivity);
+      });
+    };
+  }, [isOpen]);
 
   // Sync playback state with audio element
   useEffect(() => {
@@ -81,9 +177,10 @@ export default function Jukebox() {
 
   return (
     <div 
+      ref={jukeboxRef}
       className="fixed bottom-6 right-6 z-[100] flex flex-col items-end"
-      onMouseEnter={() => setIsOpen(true)}
-      onMouseLeave={() => setIsOpen(false)}
+      onMouseEnter={() => hasHover && setIsOpen(true)}
+      onMouseLeave={() => hasHover && setIsOpen(false)}
     >
       {/* Hidden Audio Element */}
       <audio 
@@ -181,8 +278,17 @@ export default function Jukebox() {
 
       {/* Floating Button (The Trigger) */}
       <motion.button 
-        animate={{ y: [0, -6, 0] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+        animate={{ 
+          y: [0, -6, 0],
+          opacity: isVisible && !isMobileMenuOpen ? 1 : 0,
+          scale: isVisible && !isMobileMenuOpen ? 1 : 0.8,
+          pointerEvents: isVisible && !isMobileMenuOpen ? "auto" : "none"
+        }}
+        transition={{ 
+          y: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+          opacity: { duration: 0.5, ease: "easeInOut" },
+          scale: { duration: 0.3, ease: "easeOut" }
+        }}
         className="w-16 h-16 rounded-[1.25rem] bg-white dark:bg-neutral-900 border-[3px] border-[var(--foreground)] shadow-[0_8px_30px_rgb(0,0,0,0.12)] flex items-center justify-center text-[var(--foreground)] hover:scale-105 hover:-rotate-3 transition-all duration-300 z-50 group relative"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Open Jukebox"
