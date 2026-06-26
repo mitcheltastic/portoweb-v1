@@ -4,56 +4,85 @@ import React from "react";
 import Image from "next/image"; // 👈 Ensure this is imported
 import ScrollReveal from "@/components/ScrollReveal";
 import ScrollFade from "@/components/ScrollFade";
-import { FiClock } from "react-icons/fi";
+import { FiClock, FiMapPin } from "react-icons/fi";
 
-const CAREER_DATA = [
+interface CareerItem {
+  id: number;
+  role: string;
+  company: string;
+  type: string;
+  date: string;
+  duration: string;
+  description: string;
+  logo: string;
+  location?: string;
+  points?: string[];
+}
+
+const CAREER_DATA: CareerItem[] = [
   {
     id: 1,
+    role: "Cloud Infrastructure Engineer",
+    company: "Infranexia",
+    type: "Internship",
+    date: "Jun 2026 - Present",
+    duration: "1 mo",
+    location: "South Jakarta, Jakarta, Indonesia • On-site",
+    description: "Assigned to the Virtualization & SDN Operations unit, planning cloud infrastructure migrations from OLVM to OpenStack. Evaluated enterprise Linux workloads, monitored virtualization layers via Zabbix telemetry, and analyzed high-availability routing principles (BGP, VRRP) to optimize telecom data center performance.",
+    logo: "/logos/Infranexia.png"
+  },
+  {
+    id: 2,
     role: "International Research Intern",
     company: "Sri Eshwar College of Engineering",
     type: "Internship",
     date: "Jul 2025 - Aug 2025",
     duration: "2 mos",
+    location: "Coimbatore, Tamil Nadu, India • On-site",
     description: "Participated in an intensive international research program focused on AI applications in business innovation. Engaged in collaborative machine learning sessions and executed interdisciplinary projects demonstrating industrial transformation in finance and operations.",
     logo: "/logos/sri-eshwar.png"
   },
   {
-    id: 2,
+    id: 3,
     role: "Backend Developer",
     company: "PT. Ekshalasi Langit Biru",
     type: "Contract",
     date: "Apr 2025 - Present",
     duration: "Present",
+    location: "Bandung, West Java, Indonesia • Hybrid",
     description: "Built high-performance backend services using Golang, processing 10K+ sensor data points/day. Integrated Redis caching to speed up retrieval by 55% and designed automated CI/CD pipelines with GitHub Actions, cutting deployment time by 60%.",
     logo: "/logos/birulangit.png"
   },
   {
-    id: 3,
+    id: 4,
     role: "President",
     company: "International Class Student Volunteer",
     type: "Organization",
     date: "Feb 2025 - Jan 2026",
     duration: "1 yr",
+    location: "Bandung, West Java, Indonesia • Hybrid",
     description: "Managed 50+ members, fostering a productive and inclusive work environment. Spearheaded initiatives to enhance communication and established mentorship platforms for international students.",
     logo: "/logos/SV.png"
   },
   {
-    id: 4,
+    id: 5,
     role: "Backend Developer",
     company: "PBI Evermos x Rakamin Academy",
     type: "Project Based Intern",
     date: "Jan 2025 - Feb 2025",
     duration: "2 mos",
+    location: "Bandung, West Java, Indonesia • Remote",
     description: "Developed backend algorithms using Golang, optimizing query execution time by 35%. Optimized server performance before deployment, reducing downtime by 20%, and managed database operations using MySQL.",
     logo: "/logos/evermos.png"
   },
   {
-    id: 5,
+    id: 6,
     role: "Research Assistant & HR Head",
     company: "Cyber Physical System Laboratory",
     type: "Laboratory",
     date: "Sep 2024 - Present",
     duration: "2 yrs",
+    location: "Bandung, West Java, Indonesia • On-site",
     description: "Engineered backend algorithms with Express.js, improving API response time by 30%. Built and deployed 10+ RESTful APIs with Node.js. As Head of HR, streamlined team structure and onboarding to enhance member engagement.",
     logo: "/logos/cps.jpg"
   }
@@ -125,17 +154,51 @@ export default function ExperienceSection() {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-3 text-xs text-neutral-500 font-mono mb-3">
+                <div className="flex flex-wrap items-center gap-3 text-xs text-neutral-500 font-mono mb-3">
                   <span className="flex items-center gap-1">
                     <FiClock /> {item.date}
                   </span>
                   <span>•</span>
                   <span>{item.duration}</span>
+                  {item.location && (
+                    <>
+                      <span>•</span>
+                      <span className="flex items-center gap-1">
+                        <FiMapPin /> {item.location}
+                      </span>
+                    </>
+                  )}
                 </div>
 
                 <p className="text-sm leading-relaxed text-neutral-600 dark:text-neutral-400 max-w-2xl text-justify">
                   {item.description}
                 </p>
+
+                {item.points && item.points.length > 0 && (
+                  <ul className="mt-4 flex flex-col gap-3 list-none pl-0">
+                    {item.points.map((point, idx) => {
+                      const colonIndex = point.indexOf(":");
+                      if (colonIndex !== -1) {
+                        const title = point.substring(0, colonIndex);
+                        const body = point.substring(colonIndex);
+                        return (
+                          <li key={idx} className="flex items-start gap-2.5 text-sm text-neutral-600 dark:text-neutral-400 max-w-2xl text-justify">
+                            <span className="text-blue-500 dark:text-blue-400 mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-blue-500 dark:bg-blue-400" />
+                            <span>
+                              <strong className="text-[var(--foreground)] font-semibold">{title}</strong>{body}
+                            </span>
+                          </li>
+                        );
+                      }
+                      return (
+                        <li key={idx} className="flex items-start gap-2.5 text-sm text-neutral-600 dark:text-neutral-400 max-w-2xl text-justify">
+                          <span className="text-blue-500 dark:text-blue-400 mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-blue-500 dark:bg-blue-400" />
+                          <span>{point}</span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
               </div>
 
             </div>
