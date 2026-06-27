@@ -2,6 +2,7 @@
 
 import { FaYoutube } from 'react-icons/fa';
 import { FiGithub, FiLinkedin, FiInstagram } from 'react-icons/fi';
+import { SiMyanimelist } from 'react-icons/si';
 import { motion } from "framer-motion";
 
 const LeftSidebar = () => {
@@ -69,6 +70,19 @@ const LeftSidebar = () => {
             aria-label="YouTube"
           >
             <FaYoutube />
+          </a>
+        </li>
+
+        {/* MyAnimeList */}
+        <li>
+          <a 
+            href="https://myanimelist.net/profile/MitchSenpai22" 
+            target="_blank" 
+            rel="noopener noreferrer" 
+            className={iconClass}
+            aria-label="MyAnimeList"
+          >
+            <SiMyanimelist />
           </a>
         </li>
       </ul>

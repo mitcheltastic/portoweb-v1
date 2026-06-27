@@ -1,13 +1,34 @@
 "use client";
 
-import React from "react";
+import React, { useState, useTransition } from "react";
 import { FiSend, FiMail, FiCpu } from "react-icons/fi";
 import ScrollReveal from "@/components/ScrollReveal";
 import ScrollFade from "@/components/ScrollFade";
+import { submitMessage } from "@/app/actions";
 
 export default function ContactSection() {
   // 🛠️ CONFIG: Keeps the section visible when hitting the footer
   const keepVisible = "play none none reverse"; 
+
+  const [isPending, startTransition] = useTransition();
+  const [statusMsg, setStatusMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatusMsg(null);
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    startTransition(async () => {
+      const res = await submitMessage(formData);
+      if (res.success) {
+        setStatusMsg({ type: "success", text: "Transmission completed successfully. Message stored." });
+        form.reset();
+      } else {
+        setStatusMsg({ type: "error", text: res.error || "Failed to transmit message." });
+      }
+    });
+  };
 
   return (
     <section id="contact" className="mt-32 mb-24 max-w-4xl mx-auto px-6 md:px-0">
@@ -91,18 +112,30 @@ export default function ContactSection() {
         </div>
 
         {/* 3. RIGHT SIDE: FORM */}
-        <form className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Honeypot spam protection */}
+          <input 
+            type="text" 
+            name="botField" 
+            tabIndex={-1} 
+            autoComplete="off" 
+            className="opacity-0 absolute -z-10 w-0 h-0 pointer-events-none" 
+          />
           <ScrollFade delay={0.2} fromY={20} toggleActions={keepVisible}>
             <div className="group relative">
               <input 
                 type="text" 
+                name="name"
                 placeholder="Name / Alias" 
+                required
+                disabled={isPending}
                 // ⬇️ FIXED: Text Input Color uses [var(--foreground)] so typed text is visible
                 className="w-full bg-neutral-100 dark:bg-neutral-900/50 
                            border border-neutral-200 dark:border-neutral-800 
                            rounded px-4 py-3 text-[var(--foreground)]
                            focus:outline-none focus:border-neutral-400 dark:focus:border-white 
                            focus:bg-white dark:focus:bg-neutral-900 
+                           disabled:opacity-50
                            transition-all duration-300 placeholder:text-neutral-400 dark:placeholder:text-neutral-600"
               />
             </div>
@@ -112,12 +145,16 @@ export default function ContactSection() {
             <div className="group relative">
               <input 
                 type="email" 
-                placeholder="Email Frequency" 
+                name="email"
+                placeholder="Email Address" 
+                required
+                disabled={isPending}
                 className="w-full bg-neutral-100 dark:bg-neutral-900/50 
                            border border-neutral-200 dark:border-neutral-800 
                            rounded px-4 py-3 text-[var(--foreground)]
                            focus:outline-none focus:border-neutral-400 dark:focus:border-white 
                            focus:bg-white dark:focus:bg-neutral-900 
+                           disabled:opacity-50
                            transition-all duration-300 placeholder:text-neutral-400 dark:placeholder:text-neutral-600"
               />
             </div>
@@ -127,12 +164,16 @@ export default function ContactSection() {
             <div className="group relative">
               <textarea 
                 rows={5}
+                name="message"
                 placeholder="Input Message Data..." 
+                required
+                disabled={isPending}
                 className="w-full bg-neutral-100 dark:bg-neutral-900/50 
                            border border-neutral-200 dark:border-neutral-800 
                            rounded px-4 py-3 text-[var(--foreground)]
                            focus:outline-none focus:border-neutral-400 dark:focus:border-white 
                            focus:bg-white dark:focus:bg-neutral-900 
+                           disabled:opacity-50
                            transition-all duration-300 placeholder:text-neutral-400 dark:placeholder:text-neutral-600 resize-none"
               />
             </div>
@@ -140,19 +181,35 @@ export default function ContactSection() {
 
           <ScrollFade delay={0.5} fromY={20} toggleActions={keepVisible}>
             <button 
-              type="button" 
+              type="submit" 
+              disabled={isPending}
               // ⬇️ UPDATED: Button Colors (Inverted for contrast)
               className="w-full group relative overflow-hidden 
                          bg-neutral-900 dark:bg-neutral-200 
                          text-white dark:text-neutral-900 
                          font-bold py-3 rounded 
                          hover:bg-neutral-700 dark:hover:bg-white 
+                         disabled:opacity-50 disabled:cursor-not-allowed
                          transition-all duration-300 ease-in-out hover:-translate-y-1 flex items-center justify-center gap-2"
             >
-              <span>Transmit Message</span>
-              <FiSend className="group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300" />
+              <span>{isPending ? "Transmitting..." : "Transmit Message"}</span>
+              <FiSend className={`group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform duration-300 ${isPending ? "animate-pulse" : ""}`} />
             </button>
           </ScrollFade>
+
+          {statusMsg && (
+            <ScrollFade delay={0} fromY={5} toggleActions={keepVisible}>
+              <div 
+                className={`p-3 rounded text-xs font-mono border ${
+                  statusMsg.type === "success" 
+                    ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-500" 
+                    : "bg-red-500/10 border-red-500/20 text-red-500"
+                }`}
+              >
+                [ SYSTEM STATUS ]: {statusMsg.text}
+              </div>
+            </ScrollFade>
+          )}
         </form>
 
       </div>

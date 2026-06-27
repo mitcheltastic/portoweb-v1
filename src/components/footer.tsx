@@ -2,6 +2,7 @@
 
 import { FiGithub, FiLinkedin, FiInstagram, FiGitCommit, FiMusic, FiArrowUp } from "react-icons/fi";
 import { FaYoutube } from "react-icons/fa";
+import { SiMyanimelist } from "react-icons/si";
 
 const Footer = () => {
   
@@ -56,6 +57,7 @@ const Footer = () => {
           <a href="https://linkedin.com/in/mitchaff" target="_blank" rel="noreferrer" className="text-xl hover:text-blue-600 transition-colors"><FiLinkedin /></a>
           <a href="https://www.instagram.com/mtchffnd" target="_blank" rel="noreferrer" className="text-xl hover:text-pink-600 transition-colors"><FiInstagram /></a>
           <a href="https://www.youtube.com/@MitchelAffandi" target="_blank" rel="noreferrer" className="text-xl hover:text-red-600 transition-colors"><FaYoutube /></a>
+          <a href="https://myanimelist.net/profile/MitchSenpai22" target="_blank" rel="noreferrer" className="text-xl hover:text-[#2e51a2] transition-colors" aria-label="MyAnimeList"><SiMyanimelist /></a>
         </div>
 
         {/* RECALL BUTTON (Scroll to Top) - Desktop */}

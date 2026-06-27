@@ -2,9 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Space_Mono } from "next/font/google";
 import "./globals.css";
 
-import Header from "@/components/header";
-import LeftSidebar from "@/components/leftsidebar";
-import RightSidebar from "@/components/rightsidebar";
+import NavigationWrapper from "@/components/NavigationWrapper";
 import PageWrapper from "@/components/PageWrapper";
 import Footer from "@/components/footer";
 // ⬇️ 1. Import the ThemeProvider
@@ -49,9 +47,7 @@ export default function RootLayout({
         {/* ⬇️ 4. Wrap everything in ThemeProvider */}
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <PageWrapper>
-            <Header />
-            <LeftSidebar />
-            <RightSidebar />
+            <NavigationWrapper />
             {children}
             <Footer />
             <Jukebox />
