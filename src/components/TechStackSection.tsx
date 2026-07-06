@@ -7,9 +7,17 @@ import ScrollFade from "@/components/ScrollFade";
 import { 
   SiGo, SiRedis, SiGooglecloud, SiDocker, SiPostgresql, SiNodedotjs, 
   SiLinux, SiNginx, SiMysql, SiGit, SiTypescript, SiNextdotjs, 
-  SiReact, SiTailwindcss, SiFramer, SiGithub, SiPostman, SiFigma, SiNotion 
+  SiReact, SiTailwindcss, SiFramer, SiGithub, SiPostman, SiFigma, SiNotion,
+  SiPrometheus, SiGrafana, SiTerraform, SiGoogleanalytics, SiGooglesearchconsole, SiLighthouse
 } from "react-icons/si";
 import { FiCpu } from "react-icons/fi";
+
+// Custom SVG icon for Zabbix since it's not in Simple Icons pack
+const SiZabbix = (props: React.ComponentProps<"svg">) => (
+  <svg viewBox="0 0 24 24" fill="currentColor" {...props}>
+    <path d="M3 3h18v4.5L9 16.5H21V21H3v-4.5L15 7.5H3V3z" />
+  </svg>
+);
 
 // DATA: Tech Stack Groups with Official Brand Colors
 const ROW_1 = [
@@ -22,6 +30,10 @@ const ROW_1 = [
   { name: "Linux", icon: SiLinux, color: "#000000" }, 
   { name: "Nginx", icon: SiNginx, color: "#009639" },
   { name: "MySQL", icon: SiMysql, color: "#4479A1" },
+  { name: "Terraform", icon: SiTerraform, color: "#844FBA" },
+  { name: "Zabbix", icon: SiZabbix, color: "#D40000" },
+  { name: "Prometheus", icon: SiPrometheus, color: "#E6522C" },
+  { name: "Grafana", icon: SiGrafana, color: "#F46800" },
 ];
 
 const ROW_2 = [
@@ -35,6 +47,9 @@ const ROW_2 = [
   { name: "Postman", icon: SiPostman, color: "#FF6C37" },
   { name: "Figma", icon: SiFigma, color: "#F24E1E" },
   { name: "Notion", icon: SiNotion, color: "#000000" },
+  { name: "Google Analytics", icon: SiGoogleanalytics, color: "#E37400" },
+  { name: "Search Console", icon: SiGooglesearchconsole, color: "#458CF5" },
+  { name: "Lighthouse", icon: SiLighthouse, color: "#F43F5E" },
 ];
 
 export default function TechStackSection() {

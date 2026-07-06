@@ -21,9 +21,23 @@ const spaceMono = Space_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Mitch's Porto",
-  description: "Backend, Full-Stack, and AI/ML Developer Portfolio",
-  // (Your existing icon setup is fine here, assuming you kept the manual one)
+  title: "Mitchel Mohamad Affandi | Portfolio",
+  description: "Explore my portfolio, backend engineering projects, and cloud infrastructure solutions.",
+  robots: {
+    index: true,
+    follow: true,
+  },
+  openGraph: {
+    type: "website",
+    url: "https://mitchaff.me/",
+    title: "Mitchel Mohamad Affandi | Portfolio",
+    description: "Explore my backend engineering projects and cloud infrastructure solutions.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mitchel Mohamad Affandi | Portfolio",
+    description: "Explore my backend engineering projects and cloud infrastructure solutions.",
+  },
   icons: {
     icon: "/favicon-v1.png",
     shortcut: "/favicon-v1.png",
