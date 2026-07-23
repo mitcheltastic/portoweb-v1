@@ -25,6 +25,11 @@ const CAROUSEL_DATA = [
     id: "MITCH-004",
     tag: "GAMING_MODE",
     src: "/MitchIndia.JPG", // TODO: Replace with activity pic 3
+  },
+  {
+    id: "MITCH-005",
+    tag: "INFRANEXIA",
+    src: "/MitchInfranexia.png",
   }
 ];
 
