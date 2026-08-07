@@ -33,6 +33,21 @@ const CAREER_DATA: CareerItem[] = [
   },
   {
     id: 2,
+    role: "Lead Software Engineer",
+    company: "EPICS in IEEE",
+    type: "Contract",
+    date: "Dec 2025 - Present",
+    duration: "9 mos",
+    location: "Bandung, West Java, Indonesia • Hybrid",
+    description: "Led end-to-end software development and infrastructure for Citra Banjir (citrabanjir.id), an IEEE EPICS-funded community-service flood early-warning system designed to bridge real-time environmental data with operational disaster response in West Java.",
+    logo: "/logos/epics_ieee.jpg",
+    points: [
+      "Deployment Pipeline: Built and owned the full deployment pipeline for a Dockerized monorepo (Node.js/TypeScript backend, Python AI service, Next.js frontend), including Nginx reverse proxy, SSL, and self-hosted PostgreSQL on a production VPS.",
+      "Operational Partnerships: Collaborated with BBWS Citarum, BPBD Jawa Barat, BPBD Kab. Bandung (PUSDALOPS), and BMKG Jawa Barat to align the system with real flood-response operations and ensure field-accurate alerting."
+    ]
+  },
+  {
+    id: 3,
     role: "International Research Intern",
     company: "Sri Eshwar College of Engineering",
     type: "Internship",
@@ -43,7 +58,7 @@ const CAREER_DATA: CareerItem[] = [
     logo: "/logos/sri-eshwar.png"
   },
   {
-    id: 3,
+    id: 4,
     role: "Backend Developer",
     company: "PT. Ekshalasi Langit Biru",
     type: "Contract",
@@ -54,7 +69,7 @@ const CAREER_DATA: CareerItem[] = [
     logo: "/logos/birulangit.png"
   },
   {
-    id: 4,
+    id: 5,
     role: "President",
     company: "International Class Student Volunteer",
     type: "Organization",
@@ -65,7 +80,7 @@ const CAREER_DATA: CareerItem[] = [
     logo: "/logos/SV.png"
   },
   {
-    id: 5,
+    id: 6,
     role: "Backend Developer",
     company: "PBI Evermos x Rakamin Academy",
     type: "Project Based Intern",
@@ -76,7 +91,7 @@ const CAREER_DATA: CareerItem[] = [
     logo: "/logos/evermos.png"
   },
   {
-    id: 6,
+    id: 7,
     role: "Research Assistant & HR Head",
     company: "Cyber Physical System Laboratory",
     type: "Laboratory",
