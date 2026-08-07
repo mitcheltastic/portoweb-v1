@@ -42,7 +42,7 @@ const LeftSidebar = () => {
     hoverTimeoutRef.current = setTimeout(() => {
       console.log(`[Sidebar] 1s hover timer fired, setting active social to: ${social}`);
       setActiveSocial(social);
-    }, 1000); // 1 second hover delay
+    }, 500);
   };
 
   const handleMouseLeave = () => {

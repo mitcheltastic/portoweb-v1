@@ -39,11 +39,11 @@ const CAREER_DATA: CareerItem[] = [
     date: "Dec 2025 - Present",
     duration: "9 mos",
     location: "Bandung, West Java, Indonesia • Hybrid",
-    description: "Led end-to-end software development and infrastructure for Citra Banjir (citrabanjir.id), an IEEE EPICS-funded community-service flood early-warning system designed to bridge real-time environmental data with operational disaster response in West Java.",
+    description: "Led end-to-end software development and infrastructure for Citra Banjir (citrabanjir.id), an IEEE EPICS flood early-warning system for West Java.",
     logo: "/logos/epics_ieee.jpg",
     points: [
-      "Deployment Pipeline: Built and owned the full deployment pipeline for a Dockerized monorepo (Node.js/TypeScript backend, Python AI service, Next.js frontend), including Nginx reverse proxy, SSL, and self-hosted PostgreSQL on a production VPS.",
-      "Operational Partnerships: Collaborated with BBWS Citarum, BPBD Jawa Barat, BPBD Kab. Bandung (PUSDALOPS), and BMKG Jawa Barat to align the system with real flood-response operations and ensure field-accurate alerting."
+      "Deployment Pipeline: Owned a Dockerized monorepo (Node.js, Python AI service, Next.js) with Nginx, SSL, and self-hosted PostgreSQL on a production VPS.",
+      "Operational Partnerships: Collaborated with BBWS Citarum, BPBD Jawa Barat, BPBD Kab. Bandung, and BMKG Jawa Barat to align the system with real flood-response operations."
     ]
   },
   {
