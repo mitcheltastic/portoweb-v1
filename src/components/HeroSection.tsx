@@ -22,11 +22,7 @@ const HeroSection = () => {
       className="relative min-h-screen flex flex-col pt-32 pb-20 px-6 md:px-0 mb-24 overflow-hidden"
     >
       
-      {/* 1. BACKGROUND GRID */}
-      <div className="absolute inset-0 z-[-1]">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_800px_at_50%_50%,transparent,var(--background))]" />
-      </div>
+
 
       {isReady && (
         <div className="max-w-4xl mx-auto w-full z-10">

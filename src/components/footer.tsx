@@ -18,15 +18,8 @@ const Footer = () => {
   return (
     // ⬇️ FIXED: Using [var(--background)] ensures it follows the Toggle, ignoring System Preference
     <footer 
-      className="mt-auto py-12 relative overflow-hidden border-t"
-      style={{ 
-        backgroundColor: "var(--background)", 
-        borderColor: "rgba(128, 128, 128, 0.2)" // Subtle border for both modes
-      }}
+      className="mt-auto py-12 relative overflow-hidden border-t border-neutral-200/50 dark:border-neutral-800/50 bg-white/40 dark:bg-black/40 backdrop-blur-md transition-colors duration-300"
     >
-      
-      {/* DECORATIVE: Background "Noise" */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808005_1px,transparent_1px),linear-gradient(to_bottom,#80808005_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
 
       {/* ⬇️ FIXED: Text color relies on foreground variable */}
       <div className="max-w-4xl mx-auto px-6 md:px-0 flex flex-col md:flex-row items-center justify-between gap-8 text-xs font-mono relative z-10 text-[var(--foreground)] opacity-80">
@@ -68,12 +61,8 @@ const Footer = () => {
         >
           {/* ⬇️ FIXED: Using CSS Variables for Borders/Bg to guarantee sync */}
           <div 
-            className="w-10 h-10 border rounded-full flex items-center justify-center 
-                       transition-all duration-300 group-hover:-translate-y-1"
-            style={{ 
-              borderColor: "rgba(128, 128, 128, 0.4)", 
-              backgroundColor: "var(--background)" 
-            }}
+            className="w-10 h-10 border border-neutral-300 dark:border-neutral-700 bg-white/60 dark:bg-neutral-900/60 backdrop-blur-sm rounded-full flex items-center justify-center 
+                       transition-all duration-300 group-hover:-translate-y-1 shadow-sm"
           >
             <FiArrowUp className="text-[var(--foreground)] text-lg" />
           </div>
@@ -104,13 +93,9 @@ const Footer = () => {
 
           {/* Music Badge */}
           <div 
-            className="flex items-center gap-2 mt-1 px-2 py-1 rounded border opacity-80"
-            style={{ 
-                backgroundColor: "var(--background)",
-                borderColor: "rgba(128, 128, 128, 0.3)"
-            }}
+            className="flex items-center gap-2 mt-1 px-2.5 py-1 rounded-full border border-neutral-300/80 dark:border-neutral-800/80 bg-white/50 dark:bg-neutral-900/50 backdrop-blur-sm text-neutral-600 dark:text-neutral-400"
           >
-            <FiMusic className="animate-pulse" />
+            <FiMusic className="animate-pulse text-blue-500" />
             <span className="text-[10px]">Vibing to: Plastic Love - Mariya Takeuchi ‧ 1984</span>
           </div>
         </div>

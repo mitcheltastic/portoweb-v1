@@ -103,7 +103,7 @@ const LeftSidebar = () => {
             <motion.div
               initial={{ height: "0%" }}
               animate={hoveredSocial === "github" ? { height: "100%" } : { height: "0%" }}
-              transition={{ duration: 1.0, ease: "linear" }}
+              transition={{ duration: 0.5, ease: "linear" }}
               className="absolute bottom-0 left-0 right-0 bg-neutral-950/20 dark:bg-white/20"
             />
           </div>
@@ -131,7 +131,7 @@ const LeftSidebar = () => {
             <motion.div
               initial={{ height: "0%" }}
               animate={hoveredSocial === "linkedin" ? { height: "100%" } : { height: "0%" }}
-              transition={{ duration: 1.0, ease: "linear" }}
+              transition={{ duration: 0.5, ease: "linear" }}
               className="absolute bottom-0 left-0 right-0 bg-neutral-950/20 dark:bg-white/20"
             />
           </div>
@@ -159,7 +159,7 @@ const LeftSidebar = () => {
             <motion.div
               initial={{ height: "0%" }}
               animate={hoveredSocial === "instagram" ? { height: "100%" } : { height: "0%" }}
-              transition={{ duration: 1.0, ease: "linear" }}
+              transition={{ duration: 0.5, ease: "linear" }}
               className="absolute bottom-0 left-0 right-0 bg-neutral-950/20 dark:bg-white/20"
             />
           </div>
@@ -187,7 +187,7 @@ const LeftSidebar = () => {
             <motion.div
               initial={{ height: "0%" }}
               animate={hoveredSocial === "youtube" ? { height: "100%" } : { height: "0%" }}
-              transition={{ duration: 1.0, ease: "linear" }}
+              transition={{ duration: 0.5, ease: "linear" }}
               className="absolute bottom-0 left-0 right-0 bg-neutral-950/20 dark:bg-white/20"
             />
           </div>
@@ -215,7 +215,7 @@ const LeftSidebar = () => {
             <motion.div
               initial={{ height: "0%" }}
               animate={hoveredSocial === "myanimelist" ? { height: "100%" } : { height: "0%" }}
-              transition={{ duration: 1.0, ease: "linear" }}
+              transition={{ duration: 0.5, ease: "linear" }}
               className="absolute bottom-0 left-0 right-0 bg-neutral-950/20 dark:bg-white/20"
             />
           </div>

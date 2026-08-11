@@ -8,6 +8,7 @@ import Footer from "@/components/footer";
 // ⬇️ 1. Import the ThemeProvider
 import { ThemeProvider } from "@/components/ThemeProvider";
 import Jukebox from "@/components/Jukebox";
+import AnimatedBackground from "@/components/AnimatedBackground";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -60,6 +61,7 @@ export default function RootLayout({
       >
         {/* ⬇️ 4. Wrap everything in ThemeProvider */}
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <AnimatedBackground />
           <PageWrapper>
             <NavigationWrapper />
             {children}

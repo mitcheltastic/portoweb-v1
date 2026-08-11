@@ -167,7 +167,7 @@ export default function TechStackSection() {
         </div>
 
         {/* Row 2 (Right) */}
-        <div className="w-full transform rotate-1">
+        <div className="w-full">
           <TechRow items={ROW_2} className="row-2" />
         </div>
 

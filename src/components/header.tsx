@@ -54,14 +54,12 @@ const Header = () => {
     <>
       <header
         className={`fixed top-0 left-0 right-0 z-50 px-6 md:px-10 py-4 
-                    bg-header-bg backdrop-blur-md 
-                    border-b border-neutral-200 dark:border-neutral-800 shadow-lg
-                    transition-transform duration-300 ease-in-out ${
+                    bg-header-bg backdrop-blur-xl 
+                    border-b border-neutral-200/50 dark:border-neutral-800/50 shadow-sm
+                    transition-all duration-300 ease-in-out ${
                       show ? "translate-y-0" : "-translate-y-full"
                     }`}
       >
-        {/* DECORATIVE: Subtle Grid Noise */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808005_1px,transparent_1px),linear-gradient(to_bottom,#80808005_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" />
 
         <nav className="relative flex justify-between items-center max-w-7xl mx-auto z-10">
           
