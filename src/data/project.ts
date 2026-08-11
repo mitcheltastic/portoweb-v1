@@ -2,6 +2,24 @@ import { Project } from "@/types/project";
 
 export const PROJECTS: Project[] = [
   {
+    id: 180,
+    name: "CitraBanjir – Flood Early Warning System",
+    description:
+      "IEEE EPICS flood early-warning platform for West Java. Built with Node.js & TypeScript microservices in a monorepo, Next.js frontend, and XGBoost AI model for predictive flood analytics, deployed on a production VPS.",
+    repo_url: null,
+    live_url: "https://citrabanjir.id",
+    role: "Lead Software Engineer & Architect",
+    org: "IEEE EPICS",
+    period: "Dec 2025 – Present",
+    tech: ["Next.js", "Node.js", "TypeScript", "XGBoost", "Microservices", "VPS"],
+    highlights: [
+      "Architected monorepo-style microservices backend using Node.js and TypeScript",
+      "Integrated XGBoost machine learning model for predictive flood risk analytics",
+      "Deployed high-availability microservices stack on production VPS (citrabanjir.id)",
+    ],
+    image: "/projects/citrabanjir.png",
+  },
+  {
     id: 110,
     name: "Boostify – Face Recognition Attendance",
     description:
