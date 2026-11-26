@@ -58,8 +58,8 @@ const CAREER_DATA: CareerItem[] = [
     role: "Backend Developer",
     company: "PT. Ekshalasi Langit Biru",
     type: "Contract",
-    date: "Apr 2025 - Present",
-    duration: "Present",
+    date: "Apr 2025 - Dec 2026",
+    duration: "1 yr 9 mos",
     location: "Bandung, West Java, Indonesia • Hybrid",
     description: "Built high-performance backend services using Golang, processing 10K+ sensor data points/day. Integrated Redis caching to speed up retrieval by 55% and designed automated CI/CD pipelines with GitHub Actions, cutting deployment time by 60%.",
     logo: "/logos/birulangit.png"
